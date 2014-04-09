@@ -1,0 +1,56 @@
+html, body {
+	padding: 0;
+	margin: 0;
+
+	height: 100%;
+}
+
+#sidePanelContainer {
+	padding: 0px 10px 0px 10px;
+	float: right;
+	width: 300px;
+
+	min-height: 100%;
+	/* height: auto !important; */
+	height: 100%;
+}
+
+#sidePanelContainer .wideControl {
+	width: 290px;
+}
+
+#panelContCheck {
+	width: 30px;
+}
+
+#panelMoreCheck {
+	width: 30px;
+}
+
+#plotContainer {
+	margin-right: 320px;
+
+	min-height: 100%;
+	/* height: auto !important; */
+	height: 100%;
+
+	overflow: scroll;
+}
+
+#panelProgress {
+	text-align: center;
+	position: absolute;
+	width: 126px;
+	height: 60px;
+	top: 50%;
+	left: 50%;
+	margin-top: -11px;
+	margin-left: -63px;
+}
+
+.closeButton {
+	width: 18px;
+	height: 18px;
+	float: right;
+	text-align: center;
+}

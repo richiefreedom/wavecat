@@ -1,0 +1,6 @@
+[submodule "thirdparty/mongoose"]
+	path = thirdparty/mongoose
+	url = https://github.com/cesanta/mongoose
+[submodule "thirdparty/jsmn"]
+	path = thirdparty/jsmn
+	url = https://github.com/zserge/jsmn.git

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="Canvas.js"></script>
+		<script type="text/javascript" src="Axes.js"></script>
+		<script type="text/javascript" src="ContourPlot.js"></script>
+		<script type="text/javascript" src="AJAX.js"></script>
+		<script type="text/javascript" src="TaskList.js"></script>
+		<script type="text/javascript" src="Main.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="layout.css" />
+		<link rel="stylesheet" type="text/css" href="scheme.css" />
+
+		<meta charset="utf-8">
+	</head>
+<body>
+<div id="panelProgress" class="hidden">
+	<img src="ajaxloader.gif"><br>
+	В процессе
+</div>
+
+<div id="sidePanelContainer">
+	<h2><u>Лаборатория &laquo;WaveCat&raquo;</u></h2>
+	<strong>История выполнения команд:</strong><br>
+	<textarea id="panelResponse" class="wideControl"></textarea><br><br>
+	<strong>Выбор шаблона запроса:</strong><br>
+	<select id="panelSelect" class="wideControl"></select><br><br>
+	<strong>Командная строка:</strong><br>
+	<textarea id="panelInput" class="wideControl"></textarea><br>
+	<input id="panelContCheck" type="checkbox" checked> Показывать контуры
+	<br>
+	<input id="panelMoreCheck" type="checkbox"> Больше сечений
+	<br>
+	<input id="panelSubmit" type="submit" value="Рассчитать" class="wideControl">
+</div>
+
+<div id="plotContainer">
+</div>
+
+</body>
+</html>

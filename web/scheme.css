@@ -1,0 +1,77 @@
+body {
+	background: #FFFFFF;
+	color: #222222;
+	font-family: Sans-Serif;
+}
+
+#sidePanelContainer {
+	background: #222222;
+	color: #BBBBBB;
+}
+
+#sidePanelContainer h1, h2, h3 {
+	font-weight: normal;
+}
+
+#sidePanelContainer textarea {
+	background: #111111;
+	border: none;
+	font-family: monospace;
+	color: #BBBBBB;
+}
+
+#sidePanelContainer textarea:hover {
+	background: #1f1f1f;
+	color: #EEEEEE;
+}
+
+#sidePanelContainer input, select {
+	background: #111111;
+	border: none;
+	font: monospace;
+	color: #BBBBBB;
+}
+
+#sidePanelContainer input:hover {
+	background: #990000;
+	color: #EEEEEE;
+}
+
+#panelResponse {
+	height: 100px;
+}
+
+#panelInput {
+	height: 150px;
+}
+
+.hidden {
+	display: none;
+}
+
+.shown {
+	display: block;
+}
+
+.taskDescription {
+	background: #EEEEEE;
+	padding: 10px 10px 10px 150px;
+}
+
+.taskHeader {
+	background: #333333;
+	padding: 5px;
+	color: #EEEEEE;
+}
+
+.closeButton {
+	background: #111111;
+	font: monospace;
+	color: #BBBBBB;
+	cursor: pointer;
+}
+
+.closeButton:hover {
+	background: #990000;
+	color: #EEEEEE;
+}
