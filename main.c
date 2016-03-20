@@ -58,11 +58,17 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Input length: %u\n", len);
 		fprintf(stderr, "Input: %s\n", input);
 
-		PROFILING_SAVE_CYCLES(before_calculation);
+		PROFILING_DEFINE_TIMESTAMP(ts_before);
+		PROFILING_DEFINE_TIMESTAMP(ts_after);
+
+		PROFILING_SAVE_TIMESTAMP(ts_before);
+		PROFILING_SAVE_CYCLES(clc_before);
 		json_input(input);
-		PROFILING_SAVE_CYCLES(after_calculation);
-		PROFILING_PRINT_DIFFERENCE(before_calculation,
-			after_calculation);
+		PROFILING_SAVE_CYCLES(clc_after);
+		PROFILING_SAVE_TIMESTAMP(ts_after);
+
+		PROFILING_PRINT_CYCLES_DIFFERENCE(clc_before, clc_after);
+		PROFILING_PRINT_TIMESTAMP_DIFFERENCE_MS(ts_before, ts_after);
 
 		free(input);
 
@@ -70,11 +76,18 @@ int main(int argc, char **argv)
 	}
 	case 2:
 	{
-		PROFILING_SAVE_CYCLES(before_calculation);
+		PROFILING_DEFINE_TIMESTAMP(ts_before);
+		PROFILING_DEFINE_TIMESTAMP(ts_after);
+
+		PROFILING_SAVE_TIMESTAMP(ts_before);
+		PROFILING_SAVE_CYCLES(clc_before);
 		json_input(argv[1]);
-		PROFILING_SAVE_CYCLES(after_calculation);
-		PROFILING_PRINT_DIFFERENCE(before_calculation,
-			after_calculation);
+		PROFILING_SAVE_CYCLES(clc_after);
+		PROFILING_SAVE_TIMESTAMP(ts_after);
+
+		PROFILING_PRINT_CYCLES_DIFFERENCE(clc_before, clc_after);
+		PROFILING_PRINT_TIMESTAMP_DIFFERENCE_MS(ts_before, ts_after);
+
 		break;
 	}
 	default:
