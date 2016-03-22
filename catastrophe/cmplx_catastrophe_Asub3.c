@@ -45,17 +45,9 @@ static void calculate(catastrophe_t *const catastrophe,
 	cmplx_equation_t *equation;
 	point_array_t *point_array;
 
-	const double k1 = 1.0, k2 = 1.0;
-
 	/* Gamma function's precalculated values */
 	const double g14 = 3.625609908;
 	const double g34 = 1.225416702;
-
-	/* Precalculate some trigonometric functions */
-	double c8  = cos(k2 * M_PI / 8.0);
-	double s8  = sin(k2 * M_PI / 8.0);
-	double s38 = sin(k2 * 3.0 * M_PI / 8.0);
-	double c38 = cos(k2 * 3.0 * M_PI / 8.0);
 
 	double module;
 	double phase;
