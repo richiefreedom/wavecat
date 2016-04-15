@@ -1,4 +1,4 @@
-#include <wavecat/catastrophe.h>
+#include <kernel/core/catastrophe.h>
 #include <string.h>
 #include <pthread.h>
 #include <stdio.h>

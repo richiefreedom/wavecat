@@ -1,6 +1,6 @@
-#include <wavecat/catastrophe.h>
-#include <wavecat/equation.h>
-#include <wavecat/cmplx_equation.h>
+#include <kernel/core/catastrophe.h>
+#include <kernel/core/equation.h>
+#include <kernel/core/cmplx_equation.h>
 #include <string.h>
 #include <assert.h>
 

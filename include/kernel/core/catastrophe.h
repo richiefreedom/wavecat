@@ -1,12 +1,12 @@
 #ifndef _WAVECAT_CATASTROPHE_H_
 #define _WAVECAT_CATASTROPHE_H_
 
-#include <wavecat/config.h>
-#include <wavecat/pair.h>
-#include <wavecat/equation.h>
-#include <wavecat/cmplx_equation.h>
-#include <wavecat/point_array.h>
-#include <lib/adt/list.h>
+#include <kernel/core/config.h>
+#include <kernel/core/pair.h>
+#include <kernel/core/equation.h>
+#include <kernel/core/cmplx_equation.h>
+#include <kernel/core/point_array.h>
+#include <kernel/adt/list.h>
 
 #define MAX_NAME_LEN 80
 

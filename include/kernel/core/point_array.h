@@ -1,7 +1,7 @@
 #ifndef _WAVECAT_POINT_ARRAY_H_
 #define _WAVECAT_POINT_ARRAY_H_
 
-#include <wavecat/config.h>
+#include <kernel/core/config.h>
 #include <stdlib.h>
 
 struct point_s {

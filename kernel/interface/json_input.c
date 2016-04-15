@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <wavecat/config.h>
-#include <wavecat/catastrophe.h>
-#include <wavecat/catastrophe_parallel.h>
+#include <kernel/core/config.h>
+#include <kernel/core/catastrophe.h>
+#include <kernel/core/catastrophe_parallel.h>
 
 #include "jsmn.h"
 
@@ -16,7 +16,7 @@
 /* Maximum variable or parameter name length. */
 #define MAX_NAME_LEN       80
 
-/* Derive these definitions from wavecat/config.h */
+/* Derive these definitions from kernel/core/config.h */
 #define MAX_PARAMETERS     CONFIG_CAT_MAX_PARAMETERS
 #define MAX_VARIABLES      CONFIG_CAT_MAX_VARIABLES
 

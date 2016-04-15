@@ -1,6 +1,6 @@
-#include <wavecat/catastrophe.h>
-#include <wavecat/point_array.h>
-#include <lib/integration/runge_kutta.h>
+#include <kernel/core/catastrophe.h>
+#include <kernel/core/point_array.h>
+#include <kernel/integration/runge_kutta.h>
 
 #include <math.h>
 

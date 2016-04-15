@@ -1,7 +1,7 @@
-#include <wavecat/catastrophe.h>
-#include <wavecat/catastrophe_parallel.h>
-#include <wavecat/profiling.h>
-#include <lib/interface/command_line.h>
+#include <kernel/core/catastrophe.h>
+#include <kernel/core/catastrophe_parallel.h>
+#include <kernel/core/profiling.h>
+#include <kernel/interface/command_line.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

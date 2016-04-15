@@ -1,7 +1,6 @@
 /**
- * lib/integration/cmplx_runge_kutta.c - implementation of the classical
- * Runge-Kutta method to integrate systems of ordinary differential equations
- * (ODE).
+ * kernel/integration/runge_kutta.c - implementation of the classical Runge-Kutta
+ * method to integrate systems of ordinary differential equations (ODE).
  *
  * NOTES:
  *
@@ -14,27 +13,26 @@
  *  - get rid of additional copying before and after the calculation.
  */
 
-#include <lib/integration/cmplx_runge_kutta.h>
+#include <kernel/integration/runge_kutta.h>
 
 /**
- * cmplx_runge_kutta() - simplest possible numeric method for non-complex
- * systems
+ * runge_kutta() - simplest possible numeric method for non-complex systems
  * @start       start value of the t variable
  * @end         second value of the t variable
  * @step        step
- * @catastrophe pointer to a cmplx_catastrophe descriptor
+ * @catastrophe pointer to a catastrophe descriptor
  */
-void cmplx_runge_kutta(const double start, const double end, const double step,
+void runge_kutta(const double start, const double end, const double step,
 		catastrophe_t *const cat)
 {
-	cmplx_equation_t *equation;
+	equation_t *equation;
 
-	double complex k1[CONFIG_CAT_MAX_EQUATIONS];
-	double complex k2[CONFIG_CAT_MAX_EQUATIONS];
-	double complex k3[CONFIG_CAT_MAX_EQUATIONS];
-	double complex k4[CONFIG_CAT_MAX_EQUATIONS];
-	double complex y[CONFIG_CAT_MAX_EQUATIONS];
-	double complex y1[CONFIG_CAT_MAX_EQUATIONS];
+	double k1[CONFIG_CAT_MAX_EQUATIONS];
+	double k2[CONFIG_CAT_MAX_EQUATIONS];
+	double k3[CONFIG_CAT_MAX_EQUATIONS];
+	double k4[CONFIG_CAT_MAX_EQUATIONS];
+	double  y[CONFIG_CAT_MAX_EQUATIONS];
+	double y1[CONFIG_CAT_MAX_EQUATIONS];
 
 	double t, cur_t;
 	unsigned int i;

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include <wavecat/cgi.h>
+#include <kernel/core/cgi.h>
 
 #define WAVECAT_ERROR(err) \
 	fprintf(stderr, "Error: %d (%s:%d:%s)\n", (err), __FILE__, __LINE__, \

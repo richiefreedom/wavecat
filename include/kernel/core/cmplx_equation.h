@@ -1,7 +1,7 @@
 #ifndef _WAVECAT_CMPLX_EQUATION_H_
 #define _WAVECAT_CMPLX_EQUATION_H_
 
-#include <wavecat/config.h>
+#include <kernel/core/config.h>
 
 #include <stdlib.h>
 #include <memory.h>

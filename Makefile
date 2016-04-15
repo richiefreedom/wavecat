@@ -1,13 +1,13 @@
 CFLAGS = -std=gnu99 -O2 -rdynamic -Iinclude -Ithirdparty/jsmn -Werror -Wextra -pedantic -lm
 LDFLAGS = -Lthirdparty/jsmn -lm -ljsmn -lpthread -ldl
 FILES = main.c \
-	  lib/interface/json_input.c \
-	  lib/net/url.c \
-	  lib/plugin/plugin.c \
-	  lib/integration/runge_kutta.c \
-	  lib/integration/cmplx_runge_kutta.c \
-	  catastrophe/catastrophe_common.c \
-	  catastrophe/catastrophe_parallel.c \
+	  kernel/interface/json_input.c \
+	  kernel/net/url.c \
+	  kernel/plugin/plugin.c \
+	  kernel/integration/runge_kutta.c \
+	  kernel/integration/cmplx_runge_kutta.c \
+	  kernel/core/catastrophe_common.c \
+	  kernel/core/catastrophe_parallel.c \
 	  catastrophe/catastrophe_Asub3.c \
 	  catastrophe/catastrophe_Asub1sup4.c \
 	  catastrophe/catastrophe_Ksub4_2.c \
