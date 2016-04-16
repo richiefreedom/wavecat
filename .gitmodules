@@ -4,3 +4,6 @@
 [submodule "thirdparty/jsmn"]
 	path = thirdparty/jsmn
 	url = https://github.com/zserge/jsmn.git
+[submodule "thirdparty/sigie"]
+	path = thirdparty/sigie
+	url = https://github.com/richiefreedom/sigie.git

@@ -28,9 +28,11 @@ all: tplibs
 
 tplibs:
 	make -C thirdparty/jsmn
+	make -C thirdparty/sigie
 
 thirdpartyclean:
 	make clean -C thirdparty/jsmn
+	make clean -C thirdparty/sigie
 
 server:
 	make -C thirdparty/mongoose/examples/web_server
