@@ -1,5 +1,5 @@
 CFLAGS = -std=gnu99 -O2 -rdynamic -Iinclude -Ithirdparty/jsmn -Werror -Wextra -pedantic -lm
-LDFLAGS = -Lthirdparty/jsmn -lm -ljsmn -lpthread -ldl
+LDFLAGS = -Lthirdparty/jsmn -Lthirdparty/sigie -lm -ljsmn -lsigie -lpthread -ldl
 FILES = main.c \
 	  kernel/interface/json_input.c \
 	  kernel/net/url.c \
