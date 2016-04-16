@@ -9,6 +9,7 @@
 int json_input(const char *json_str);
 
 unsigned int cgi_mode = 0;
+FILE *out_file_desc;
 
 static void print_cgi_header(void)
 {
@@ -25,6 +26,8 @@ int main(int argc, char **argv)
 	size_t ret;
 
 	plugin_loaddir("plugins");
+
+	out_file_desc = stdout;
 
 	switch (argc) {
 	case 1:

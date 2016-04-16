@@ -4,6 +4,8 @@
 #include <kernel/core/config.h>
 #include <stdlib.h>
 
+extern FILE *out_file_desc;
+
 struct point_s {
 	double module;
 	double phase;
@@ -84,34 +86,34 @@ static inline void point_array_module_print_json(point_array_t *pa)
 	unsigned int i, j;
 	double min_z, max_z;
 
-	printf("experimentData = {\n");
+	fprintf(out_file_desc, "experimentData = {\n");
 
-	printf("minX : %f, maxX : %f, minY : %f, maxY : %f,\n",
+	fprintf(out_file_desc, "minX : %f, maxX : %f, minY : %f, maxY : %f,\n",
 			pa->min_x, pa->max_x, pa->min_y, pa->max_y);
 
-	printf("data : [");
+	fprintf(out_file_desc, "data : [");
 
 	min_z = max_z = pa->array[0][0].module;
 	for (i = 0; i < pa->num_steps_x; i++) {
-		printf("[");
+		fprintf(out_file_desc, "[");
 		for (j = 0; j < pa->num_steps_y; j++) {
 			min_z = (pa->array[i][j].module < min_z) ?
 				pa->array[i][j].module : min_z;
 			max_z = (pa->array[i][j].module > max_z) ?
 				pa->array[i][j].module : max_z;
-			printf("%f", pa->array[i][j].module);
+			fprintf(out_file_desc, "%f", pa->array[i][j].module);
 			if (j != pa->num_steps_y - 1)
-				printf(", ");
+				fprintf(out_file_desc, ", ");
 		}
-		printf("]");
+		fprintf(out_file_desc, "]");
 		if (i != pa->num_steps_x - 1)
-			printf(", ");
-		printf("\n");
+			fprintf(out_file_desc, ", ");
+		fprintf(out_file_desc, "\n");
 	}
 
-	printf("], \n");
-	printf("minZ: %f, maxZ: %f\n", min_z, max_z);
-	printf("};");
+	fprintf(out_file_desc, "], \n");
+	fprintf(out_file_desc, "minZ: %f, maxZ: %f\n", min_z, max_z);
+	fprintf(out_file_desc, "};");
 }
 
 static inline void point_array_phase_print_json(point_array_t *pa)
@@ -119,34 +121,34 @@ static inline void point_array_phase_print_json(point_array_t *pa)
 	unsigned int i, j;
 	double min_z, max_z;
 
-	printf("experimentData = {\n");
+	fprintf(out_file_desc, "experimentData = {\n");
 
-	printf("minX : %f, maxX : %f, minY : %f, maxY : %f,\n",
+	fprintf(out_file_desc, "minX : %f, maxX : %f, minY : %f, maxY : %f,\n",
 			pa->min_x, pa->max_x, pa->min_y, pa->max_y);
 
-	printf("data : [");
+	fprintf(out_file_desc, "data : [");
 
 	min_z = max_z = pa->array[0][0].phase;
 	for (i = 0; i < pa->num_steps_x; i++) {
-		printf("[");
+		fprintf(out_file_desc, "[");
 		for (j = 0; j < pa->num_steps_y; j++) {
 			min_z = (pa->array[i][j].phase < min_z) ?
 				pa->array[i][j].phase : min_z;
 			max_z = (pa->array[i][j].phase > max_z) ?
 				pa->array[i][j].phase : max_z;
-			printf("%f", pa->array[i][j].phase);
+			fprintf(out_file_desc, "%f", pa->array[i][j].phase);
 			if (j != pa->num_steps_y - 1)
-				printf(", ");
+				fprintf(out_file_desc, ", ");
 		}
-		printf("]");
+		fprintf(out_file_desc, "]");
 		if (i != pa->num_steps_x - 1)
-			printf(", ");
-		printf("\n");
+			fprintf(out_file_desc, ", ");
+		fprintf(out_file_desc, "\n");
 	}
 
-	printf("], \n");
-	printf("minZ: %f, maxZ: %f\n", min_z, max_z);
-	printf("};");
+	fprintf(out_file_desc, "], \n");
+	fprintf(out_file_desc, "minZ: %f, maxZ: %f\n", min_z, max_z);
+	fprintf(out_file_desc, "};");
 }
 
 #endif /* _WAVECAT_POINT_ARRAY_H_ */
