@@ -1,6 +1,8 @@
 #include <kernel/core/catastrophe.h>
 #include <kernel/core/equation.h>
 #include <kernel/core/cmplx_equation.h>
+#include <kernel/cache/simple.h>
+#include <kernel/core/config.h>
 #include <string.h>
 #include <assert.h>
 
@@ -8,6 +10,9 @@ static DECLARE_LIST_HEAD(catastrophe_desc_list);
 
 void register_catastrophe_desc(catastrophe_desc_t *cd)
 {
+#ifdef CONFIG_CACHE_RESULT
+	cd->cache_root = NULL;
+#endif
 	list_add_tail(&cd->list, &catastrophe_desc_list);
 }
 
@@ -67,16 +72,49 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 
 	point_array_t *pa = catastrophe->point_array;
 
+#ifdef CONFIG_CACHE_RESULT
+	struct cached_result  temp_key;
+	struct cached_result *result;
+
+	temp_key.num_parameters = catastrophe->num_parameters;
+	for (i = 0; i < catastrophe->num_parameters; i++) {
+		temp_key.parameter[i] = catastrophe->parameter[i].cur_value;
+	}
+
+	temp_key.num_variables = catastrophe->num_variables;
+	for (i = 0; i < catastrophe->num_variables; i++) {
+		temp_key.variable[i] = catastrophe->variable[i].cur_value;
+	}
+#endif
+
 	for (i = 1; i <= p1_steps; i++) {
 		/* Calculate the current value of the parameter */
 		catastrophe->parameter[p1_idx].cur_value =
 			p1_min + (i-1) * (p1_max - p1_min) / (p1_steps - 1);
+#ifdef CONFIG_CACHE_RESULT
+		temp_key.parameter[p1_idx] =
+			catastrophe->parameter[p1_idx].cur_value;
+#endif
 		for (j = 1; j <= p2_steps; j++) {
 			catastrophe->parameter[p2_idx].cur_value =
 				p2_min + (j-1) *
 				(p2_max - p2_min) /
 				(p2_steps - 1);
+#ifdef CONFIG_CACHE_RESULT
+			temp_key.parameter[p2_idx] =
+				catastrophe->parameter[p2_idx].cur_value;
 
+			result = simple_cache_search_result(
+					&catastrophe->descriptor->cache_root,
+					&temp_key);
+			if (result) {
+				pa->array[i-1][j-1].module =
+					result->point.module;
+				pa->array[i-1][j-1].phase =
+					result->point.phase;
+				continue;
+			}
+#endif
 			catastrophe->calculate(catastrophe, i - 1, j - 1);
 
 			/* 
@@ -89,6 +127,19 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 				WAVECAT_ERROR(-1);
 				return -1;
 			}
+
+#ifdef CONFIG_CACHE_RESULT
+			result = simple_cache_cached_result_alloc();
+			if (!result)
+				continue;
+
+			memcpy(result, &temp_key, sizeof(*result));
+			result->point.module = pa->array[i-1][j-1].module;
+			result->point.phase = pa->array[i-1][j-1].phase;
+			simple_cache_save_result(
+					&catastrophe->descriptor->cache_root,
+					result);
+#endif
 		}
 	}
 
@@ -161,6 +212,8 @@ catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
 	catastrophe = construct_catastrophe();
 	if (!catastrophe)
 		goto error;
+
+	catastrophe->descriptor = desc;
 
 	if (desc->par_names) {
 		if (bind_parameter_names(desc, catastrophe, parameter))

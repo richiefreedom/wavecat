@@ -42,6 +42,37 @@ typedef struct catastrophe_s catastrophe_t;
 typedef void (*catastrophe_calculate_t)(catastrophe_t *const catastrophe,
 			const unsigned int i, const unsigned int j);
 
+typedef struct catastrophe_desc_s catastrophe_desc_t;
+typedef catastrophe_t *(*catastrophe_fabric_t)(catastrophe_desc_t *desc,
+		parameter_t *parameter, variable_t *variable);
+
+struct catastrophe_desc_s {
+	catastrophe_type_t   type;
+
+	list_head_t          list;
+	char                *sym_name;
+	catastrophe_fabric_t fabric;
+
+	unsigned int         num_parameters;
+	unsigned int         num_variables;
+
+	char               **par_names;
+	char               **var_names;
+
+	union {
+		equation_function_t        real;
+		cmplx_equation_function_t  cmplx;
+	} equation;
+
+	unsigned int         num_equations;
+
+	catastrophe_calculate_t calculate;
+
+#ifdef CONFIG_CACHE_RESULT
+	void *cache_root;
+#endif
+};
+
 struct catastrophe_s {
 	catastrophe_type_t    type;
 
@@ -56,6 +87,8 @@ struct catastrophe_s {
 	const char           *sym_name;
 
 	catastrophe_calculate_t calculate;
+
+	catastrophe_desc_t   *descriptor;
 };
 
 /**
@@ -136,33 +169,6 @@ catastrophe_is_pair_correct(uint_pair_t *pair)
 }
 
 int catastrophe_loop(catastrophe_t *const catastrophe);
-
-typedef struct catastrophe_desc_s catastrophe_desc_t;
-typedef catastrophe_t *(*catastrophe_fabric_t)(catastrophe_desc_t *desc,
-		parameter_t *parameter, variable_t *variable);
-
-struct catastrophe_desc_s {
-	catastrophe_type_t   type;
-
-	list_head_t          list;
-	char                *sym_name;
-	catastrophe_fabric_t fabric;
-
-	unsigned int         num_parameters;
-	unsigned int         num_variables;
-
-	char               **par_names;
-	char               **var_names;
-
-	union {
-		equation_function_t        real;
-		cmplx_equation_function_t  cmplx;
-	} equation;
-
-	unsigned int         num_equations;
-
-	catastrophe_calculate_t calculate;
-};
 
 catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
 		parameter_t *parameter, variable_t *variable);

@@ -4,6 +4,7 @@ FILES = main.c \
 	  kernel/interface/json_input.c \
 	  kernel/net/url.c \
 	  kernel/plugin/plugin.c \
+	  kernel/cache/simple.c \
 	  kernel/integration/runge_kutta.c \
 	  kernel/integration/cmplx_runge_kutta.c \
 	  kernel/core/catastrophe_common.c \
