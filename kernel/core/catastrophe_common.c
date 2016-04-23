@@ -5,12 +5,16 @@
 #include <kernel/core/config.h>
 #include <string.h>
 #include <assert.h>
+#include <pthread.h>
 
 static DECLARE_LIST_HEAD(catastrophe_desc_list);
 
 void register_catastrophe_desc(catastrophe_desc_t *cd)
 {
 #ifdef CONFIG_CACHE_RESULT
+#ifdef CONFIG_PARALLEL_COMP
+	pthread_spin_init(&cd->cache_root_lock, PTHREAD_PROCESS_PRIVATE);
+#endif
 	cd->cache_root = NULL;
 #endif
 	list_add_tail(&cd->list, &catastrophe_desc_list);
@@ -104,9 +108,17 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 			temp_key.parameter[p2_idx] =
 				catastrophe->parameter[p2_idx].cur_value;
 
+#ifdef CONFIG_PARALLEL_COMP
+			pthread_spin_lock(
+				&catastrophe->descriptor->cache_root_lock);
+#endif
 			result = simple_cache_search_result(
 					&catastrophe->descriptor->cache_root,
 					&temp_key);
+#ifdef CONFIG_PARALLEL_COMP
+			pthread_spin_unlock(
+				&catastrophe->descriptor->cache_root_lock);
+#endif
 			if (result) {
 				pa->array[i-1][j-1].module =
 					result->point.module;
@@ -129,7 +141,15 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 			}
 
 #ifdef CONFIG_CACHE_RESULT
+#ifdef CONFIG_PARALLEL_COMP
+			pthread_spin_lock(
+				&catastrophe->descriptor->cache_root_lock);
+#endif
 			result = simple_cache_cached_result_alloc();
+#ifdef CONFIG_PARALLEL_COMP
+			pthread_spin_unlock(
+				&catastrophe->descriptor->cache_root_lock);
+#endif
 			if (!result)
 				continue;
 

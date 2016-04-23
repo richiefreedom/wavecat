@@ -8,6 +8,8 @@
 #include <kernel/core/point_array.h>
 #include <kernel/adt/list.h>
 
+#include <pthread.h>
+
 #define MAX_NAME_LEN 80
 
 #define PARAM(num)    (catastrophe->parameter[(num)].cur_value)
@@ -69,6 +71,9 @@ struct catastrophe_desc_s {
 	catastrophe_calculate_t calculate;
 
 #ifdef CONFIG_CACHE_RESULT
+#ifdef CONFIG_PARALLEL_COMP
+	pthread_spinlock_t cache_root_lock;
+#endif
 	void *cache_root;
 #endif
 };

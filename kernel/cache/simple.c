@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <search.h>
+#include <pthread.h>
 
 static unsigned int allocated_bytes = 0;
 
@@ -68,17 +69,22 @@ struct cached_result *simple_cache_search_result(void **root,
 struct cached_result *simple_cache_cached_result_alloc(void)
 {
 	struct cached_result *result;
+	unsigned int checked_bytes;
 
-	if (allocated_bytes >= CONFIG_CACHE_MAX_ALLOC)
-		return NULL;
-
-	result = malloc(sizeof(*result));
-	if (!result) {
-		perror("[error] Cannot allocate cached result object");
+	checked_bytes = __sync_fetch_and_add(&allocated_bytes, sizeof(*result));
+	if (checked_bytes >= CONFIG_CACHE_MAX_ALLOC) {
+		checked_bytes = __sync_fetch_and_sub(&allocated_bytes,
+				sizeof(*result));
 		return NULL;
 	}
 
-	allocated_bytes += sizeof(*result);
+	result = malloc(sizeof(*result));
+	if (!result) {
+		checked_bytes = __sync_fetch_and_sub(&allocated_bytes,
+				sizeof(*result));
+		perror("[error] Cannot allocate cached result object");
+		return NULL;
+	}
 
 	return result;
 }

@@ -27,14 +27,10 @@
 #define CONFIG_CACHE_MAX_ALLOC    (200 * 1024 * 1024)
 
 /* Define the macro to perform parallel computation */
-//#define CONFIG_PARALLEL_COMP
+#define CONFIG_PARALLEL_COMP
 /* Define the macro to perform profiling */
 #define CONFIG_PROFILING
 /* Define the macro to perform result caching */
 #define CONFIG_CACHE_RESULT
-
-#if defined(CONFIG_CACHE_RESULT) && defined(CONFIG_PARALLEL_COMP)
-#undef CONFIG_PARALLEL_COMP
-#endif
 
 #endif
