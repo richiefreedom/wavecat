@@ -441,13 +441,8 @@ int json_input(const char *json_str)
 				jpc.parameter, jpc.variable);
 		if (!catastrophe)
 			return -1;
-#ifdef CONFIG_PARALLEL_COMP
 		if (catastrophe_parallel_loop(catastrophe))
 			return -1;
-#else
-		if (catastrophe_loop(catastrophe))
-			return -1;
-#endif
 		if (!jpc.is_phase)
 			point_array_module_print_json(
 				catastrophe->point_array);

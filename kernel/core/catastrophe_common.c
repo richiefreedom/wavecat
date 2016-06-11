@@ -73,6 +73,8 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 	double p2_max = catastrophe->parameter[p2_idx].max_value;
 	double p1_steps = catastrophe->parameter[p1_idx].num_steps;
 	double p2_steps = catastrophe->parameter[p2_idx].num_steps;
+	double p1_step_size = catastrophe->parameter[p1_idx].step_size;
+	double p2_step_size = catastrophe->parameter[p2_idx].step_size;
 
 	point_array_t *pa = catastrophe->point_array;
 
@@ -91,19 +93,17 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 	}
 #endif
 
-	for (i = 1; i <= p1_steps; i++) {
+	for (i = 0; i < p1_steps; i++) {
 		/* Calculate the current value of the parameter */
 		catastrophe->parameter[p1_idx].cur_value =
-			p1_min + (i-1) * (p1_max - p1_min) / (p1_steps - 1);
+			p1_min + i * p1_step_size;
 #ifdef CONFIG_CACHE_RESULT
 		temp_key.parameter[p1_idx] =
 			catastrophe->parameter[p1_idx].cur_value;
 #endif
-		for (j = 1; j <= p2_steps; j++) {
+		for (j = 0; j < p2_steps; j++) {
 			catastrophe->parameter[p2_idx].cur_value =
-				p2_min + (j-1) *
-				(p2_max - p2_min) /
-				(p2_steps - 1);
+				p2_min + j * p2_step_size;
 #ifdef CONFIG_CACHE_RESULT
 			temp_key.parameter[p2_idx] =
 				catastrophe->parameter[p2_idx].cur_value;
@@ -120,22 +120,22 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 				&catastrophe->descriptor->cache_root_lock);
 #endif
 			if (result) {
-				pa->array[i-1][j-1].module =
+				pa->array[i][j].module =
 					result->point.module;
-				pa->array[i-1][j-1].phase =
+				pa->array[i][j].phase =
 					result->point.phase;
 				continue;
 			}
 #endif
-			catastrophe->calculate(catastrophe, i - 1, j - 1);
+			catastrophe->calculate(catastrophe, i, j);
 
 			/* 
 			 * Check the result of calculation in the point.
 			 * In the case of infinum value the calculations
 			 * must be stopped.
 			 */
-			if (pa->array[i-1][j-1].module > 100 ||
-				pa->array[i-1][j-1].module < -100) {
+			if (pa->array[i][j].module > 100 ||
+				pa->array[i][j].module < -100) {
 				WAVECAT_ERROR(-1);
 				return -1;
 			}
@@ -154,8 +154,8 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 				continue;
 
 			memcpy(result, &temp_key, sizeof(*result));
-			result->point.module = pa->array[i-1][j-1].module;
-			result->point.phase = pa->array[i-1][j-1].phase;
+			result->point.module = pa->array[i][j].module;
+			result->point.phase = pa->array[i][j].phase;
 			simple_cache_save_result(
 					&catastrophe->descriptor->cache_root,
 					result);

@@ -21,6 +21,7 @@ struct parameter_s {
 	double         cur_value;
 	double         min_value;
 	double         max_value;
+	double         step_size;
 	unsigned int   num_steps;
 	char           sym_name[MAX_NAME_LEN];
 };
