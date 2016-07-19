@@ -53,8 +53,8 @@ function prepareCanvas(width, height)
 
 function drawPlot()
 {
-	var canvasWidth  = 3.0 * (experimentData.data.length) + 250;
-	var canvasHeight = 3.0 * (experimentData.data[0].length) + 100;
+	var canvasWidth  = 3.0 * (experimentData.data[0].length) + 250;
+	var canvasHeight = 3.0 * (experimentData.data.length) + 100;
 	var canvas = prepareCanvas(canvasWidth, canvasHeight);
 	if (!canvas)
 		return;
