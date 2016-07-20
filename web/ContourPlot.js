@@ -13,34 +13,6 @@ function classifyCell(p0, p1, p2, p3, threshold)
 
 	return (p0Mark << 3) | (p1Mark << 2) | (p2Mark << 1) | p3Mark;
 }
-/*
-function classifyFilledVertex(p, threshold, bandRoom)
-{
-	if (p < threshold - bandRoom)
-		pMark = 0;
-	else if (p > threshold + bandRoom)
-		pMark = 2;
-	else
-		pMark = 1;
-
-	return pMark;
-}
-
-function classifyFilledCell(p0, p1, p2, p3, threshold, bandRoom)
-{
-	var p0Mark = classifyFilledVertex(p0, threshold, bandRoom);
-	var p1Mark = classifyFilledVertex(p1, threshold, bandRoom);
-	var p2Mark = classifyFilledVertex(p2, threshold, bandRoom);
-	var p3Mark = classifyFilledVertex(p3, threshold, bandRoom);
-
-	return (p0Mark << 6) | (p1Mark << 4) | (p2Mark << 2) | p3Mark;
-}
-*/
-
-/*
- * 170 and 0 are not filled
- *
- */
 
 function interpRatio(p0, p1, threshold)
 {
