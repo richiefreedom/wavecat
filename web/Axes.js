@@ -1,7 +1,7 @@
 function drawAxesScaled(ctx, scale, x0, y0, experimentData)
 {
-	x1 = experimentData.data[0].length;
-	y1 = experimentData.data.length;
+	x1 = experimentData.data.length;
+	y1 = experimentData.data[0].length;
 	startX = experimentData.minX;
 	startY = experimentData.minY;
 	endX = experimentData.maxX;
@@ -34,7 +34,7 @@ function drawAxesScaled(ctx, scale, x0, y0, experimentData)
 				drawLineScaled(ctx, scale, x0+width, j,
 					x0+width-1, j);
 				drawTextScaled(ctx, scale,
-					(startY + j*dY).toFixed(1).toString(),
+					(endY - j*dY).toFixed(1).toString(),
 					x0+width+10, j+2);
 			}
 			drawPixelScaled(ctx, scale, i, j);

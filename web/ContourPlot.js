@@ -70,65 +70,55 @@ function drawContourPlot(ctx, scale, data, thresholds, colors)
 					case 12:
 						ratio0 = interpRatio(data[i][j], data[i+1][j], thresholds[t]);
 						ratio1 = interpRatio(data[i][j+1], data[i+1][j+1], thresholds[t]);
-						// console.log("3/12 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i+ratio0, j, i+ratio1, j+1);
+						drawLineScaledInv(ctx, scale, j, i+ratio0, j+1, i+ratio1);
 						break;
 					case 6: /*  |  */
 					case 9:
 						ratio0 = interpRatio(data[i][j], data[i][j+1], thresholds[t]);
 						ratio1 = interpRatio(data[i+1][j], data[i+1][j+1], thresholds[t]);
-						// console.log("6/9 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i, j+ratio0, i+1, j+ratio1);
+						drawLineScaledInv(ctx, scale, j+ratio0, i, j+ratio1, i+1);
 						break;
 					case 1: /* .\  */
 					case 14:
 						ratio0 = interpRatio(data[i][j], data[i+1][j], thresholds[t]);
 						ratio1 = interpRatio(data[i+1][j], data[i+1][j+1], thresholds[t]);
-						// console.log("1/14 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i+ratio0, j, i+1, j+ratio1);
+						drawLineScaledInv(ctx, scale, j, i+ratio0, j+ratio1, i+1);
 						break;
 					case 2: /*  /. */
 					case 13:
 						ratio0 = interpRatio(data[i+1][j], data[i+1][j+1], thresholds[t]);
 						ratio1 = interpRatio(data[i][j+1], data[i+1][j+1], thresholds[t]);
-						// console.log("2/13 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i+1, j+ratio0, i+ratio1, j+1);
+						drawLineScaledInv(ctx, scale, j+ratio0, i+1, j+1, i+ratio1);
 						break;
 					case 4: /*  \` */
 					case 11:
 						ratio0 = interpRatio(data[i][j], data[i][j+1], thresholds[t]);
 						ratio1 = interpRatio(data[i][j+1], data[i+1][j+1], thresholds[t]);
-						// console.log("4/11 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i, j+ratio0, i+ratio1, j+1);
+						drawLineScaledInv(ctx, scale, j+ratio0, i, j+1, i+ratio1);
 						break;
 					case 7: /* `/  */
 					case 8:
 						ratio0 = interpRatio(data[i][j], data[i+1][j], thresholds[t]);
 						ratio1 = interpRatio(data[i][j], data[i][j+1], thresholds[t]);
-						// console.log("7/8 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i+ratio0, j, i, j+ratio1);
+						drawLineScaledInv(ctx, scale, j, i+ratio0, j+ratio1, i);
 						break;
 					case 5: /* / / */
 						ratio0 = interpRatio(data[i][j], data[i+1][j], thresholds[t]);
 						ratio1 = interpRatio(data[i][j], data[i][j+1], thresholds[t]);
-						// console.log("5 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i+ratio0, j, i, j+ratio1);
+						drawLineScaledInv(ctx, scale, j, i+ratio0, j+ratio1, i);
 
 						ratio0 = interpRatio(data[i+1][j], data[i+1][j+1], thresholds[t]);
 						ratio1 = interpRatio(data[i][j+1], data[i+1][j+1], thresholds[t]);
-						// console.log("5 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i+1, j+ratio0, i+ratio1, j+1);
+						drawLineScaledInv(ctx, scale, j+ratio0, i+1, j+1, i+ratio1);
 						break;
 					case 10: /* \ \ */
 						ratio0 = interpRatio(data[i][j], data[i+1][j], thresholds[t]);
 						ratio1 = interpRatio(data[i+1][j], data[i+1][j+1], thresholds[t]);
-						// console.log("10 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i+ratio0, j, i+1, j+ratio1);
+						drawLineScaledInv(ctx, scale, j, i+ratio0, j+ratio1, i+1);
 
 						ratio0 = interpRatio(data[i][j], data[i][j+1], thresholds[t]);
 						ratio1 = interpRatio(data[i][j+1], data[i+1][j+1], thresholds[t]);
-						// console.log("10 " + i + " " + j + " " + ratio0 + " " + ratio1);
-						drawLineScaledInv(ctx, scale, i, j+ratio0, i+ratio1, j+1);
+						drawLineScaledInv(ctx, scale, j+ratio0, i, j+1, i+ratio1);
 						break;
 				}
 			}
@@ -165,11 +155,11 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 				switch (cellClass) {
 					case 15: /* all square filled */
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i, j+1);	
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i, j);
+						moveToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j+1, i);	
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j, i);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -179,11 +169,11 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("12");
 						
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);	
-						lineToScaledInv(ctx, scale, i, j+1);
-						lineToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);	
+						lineToScaledInv(ctx, scale, j+1, i);
+						lineToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -193,11 +183,11 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("3");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -207,11 +197,11 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("9");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i, j+ratio0);
-						lineToScaledInv(ctx, scale, i+1, j+ratio1);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i);
+						lineToScaledInv(ctx, scale, j+ratio1, i+1);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j+ratio0, i);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -221,11 +211,11 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("6");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i, j+ratio0);
-						lineToScaledInv(ctx, scale, i+1, j+ratio1);
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i, j+1);
-						lineToScaledInv(ctx, scale, i, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i);
+						lineToScaledInv(ctx, scale, j+ratio1, i+1);
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j+1, i);
+						lineToScaledInv(ctx, scale, j+ratio0, i);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -235,12 +225,12 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("14");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i+1, j+ratio1);
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i, j+1);
-						lineToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+ratio1, i+1);
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j+1, i);
+						lineToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -250,10 +240,10 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("1");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i+1, j+ratio1);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+ratio1, i+1);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -263,12 +253,12 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("13");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+1, j+ratio0);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);
-						lineToScaledInv(ctx, scale, i, j+1);
-						lineToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i+1, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i+1);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);
+						lineToScaledInv(ctx, scale, j+1, i);
+						lineToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j+ratio0, i+1);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -278,10 +268,10 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("2");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+1, j+ratio0);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i+1);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j+ratio0, i+1);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -291,12 +281,12 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("11");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i, j+ratio0);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j+ratio0, i);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -306,10 +296,10 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("4");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i, j+ratio0);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);
-						lineToScaledInv(ctx, scale, i, j+1);
-						lineToScaledInv(ctx, scale, i, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);
+						lineToScaledInv(ctx, scale, j+1, i);
+						lineToScaledInv(ctx, scale, j+ratio0, i);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -319,10 +309,10 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("8");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i, j+ratio1);
-						lineToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+ratio1, i);
+						lineToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -332,12 +322,12 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						// console.log("7");
 
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i, j+ratio1);
-						lineToScaledInv(ctx, scale, i, j+1);
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+ratio1, i);
+						lineToScaledInv(ctx, scale, j+1, i);
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -347,20 +337,20 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						ratio0 = interpRatio(data[i][j], data[i+1][j], thresholds[t]);
 						ratio1 = interpRatio(data[i][j], data[i][j+1], thresholds[t]);
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i, j+ratio1);
-						lineToScaledInv(ctx, scale, i, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+ratio1, i);
+						lineToScaledInv(ctx, scale, j, i);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 
 						ratio0 = interpRatio(data[i+1][j], data[i+1][j+1], thresholds[t]);
 						ratio1 = interpRatio(data[i][j+1], data[i+1][j+1], thresholds[t]);
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+1, j+ratio0);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j+1);
-						lineToScaledInv(ctx, scale, i+1, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i+1);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);
+						lineToScaledInv(ctx, scale, j+1, i+1);
+						lineToScaledInv(ctx, scale, j+ratio0, i+1);
 						ctx.closePath();
 						ctx.fill();
 						break;
@@ -370,20 +360,20 @@ function drawFilledContourPlot(ctx, scale, data, thresholds, colors)
 						ratio0 = interpRatio(data[i][j], data[i+1][j], thresholds[t]);
 						ratio1 = interpRatio(data[i+1][j], data[i+1][j+1], thresholds[t]);
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i+ratio0, j);
-						lineToScaledInv(ctx, scale, i+1, j+ratio1);
-						lineToScaledInv(ctx, scale, i+1, j);
-						lineToScaledInv(ctx, scale, i+ratio0, j);
+						moveToScaledInv(ctx, scale, j, i+ratio0);
+						lineToScaledInv(ctx, scale, j+ratio1, i+1);
+						lineToScaledInv(ctx, scale, j, i+1);
+						lineToScaledInv(ctx, scale, j, i+ratio0);
 						ctx.closePath();
 						ctx.fill();
 
 						ratio0 = interpRatio(data[i][j], data[i][j+1], thresholds[t]);
 						ratio1 = interpRatio(data[i][j+1], data[i+1][j+1], thresholds[t]);
 						ctx.beginPath();
-						moveToScaledInv(ctx, scale, i, j+ratio0);
-						lineToScaledInv(ctx, scale, i+ratio1, j+1);
-						lineToScaledInv(ctx, scale, i, j+1);
-						lineToScaledInv(ctx, scale, i, j+ratio0);
+						moveToScaledInv(ctx, scale, j+ratio0, i);
+						lineToScaledInv(ctx, scale, j+1, i+ratio1);
+						lineToScaledInv(ctx, scale, j+1, i);
+						lineToScaledInv(ctx, scale, j+ratio0, i);
 						ctx.closePath();
 						ctx.fill();
 						break;
