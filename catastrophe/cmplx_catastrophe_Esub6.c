@@ -12,7 +12,9 @@ enum parameters {
 	LAMBDA_2,
 	LAMBDA_3,
 	LAMBDA_4,
-	LAMBDA_5
+	LAMBDA_5,
+	K_1,
+	K_2
 };
 
 enum components {
@@ -24,13 +26,7 @@ enum components {
 	V5
 };
 
-enum variables {
-	VARIABLE_K1 = 0,
-	VARIABLE_K2
-};
-
-static char *par_names[] = {"l1", "l2", "l3", "l4", "l5", NULL};
-static char *var_names[] = {"k1", "k2", NULL};
+static char *par_names[] = {"l1", "l2", "l3", "l4", "l5", "k1", "k2", NULL};
 
 void cmplx_catastrophe_Esub6_function(
 		const catastrophe_t *const catastrophe,
@@ -52,12 +48,12 @@ void cmplx_catastrophe_Esub6_function(
 	l5 = PARAM(LAMBDA_5) * t;
 
 	/* Depends on nothing */
-	U31 = VAR(VARIABLE_K1) / 4.0 *
+	U31 = PARAM(K_1) / 4.0 *
 		(l1 * y[V] - 2.0 * I * l3 * y[V1] - I * l4 * y[V2] -
 		 2.0 * I * l5 * y[V4]);
 
 	/* Depends on nothing */
-	U22 = VAR(VARIABLE_K2) / 3.0 *
+	U22 = PARAM(K_2) / 3.0 *
 		(l2 * y[V] - I * l5 * y[V3] - I * l4 * y[V1]);
 
 	U11 = I * y[V3];
@@ -66,53 +62,53 @@ void cmplx_catastrophe_Esub6_function(
 	U21 = I * y[V4];
 
 	/* Depends on U31 */
-	U42 = -I * VAR(VARIABLE_K2) / 3.0 *
+	U42 = -I * PARAM(K_2) / 3.0 *
 		(l2 * y[V1] - I * l5 * U31 + l4 * y[V3]);
 
 	/* Depends on nothing */
-	U33 = -I * VAR(VARIABLE_K1) / 4.0 *
+	U33 = -I * PARAM(K_1) / 4.0 *
 		(y[V] + l1 * y[V1] + 2.0 * l3 * y[V3] + l4 * y[V4] + 2.0 *
 		 l5 * y[V5]);
 
 	/* Depends on U22, U42 */
-	U51 = U43 = I * VAR(VARIABLE_K1) / 4.0 *
+	U51 = U43 = I * PARAM(K_1) / 4.0 *
 		(I * l4 * U22 + 2.0 * I * l5 * U42 - l1 * y[V2] -
 		 2.0 * l3 * y[V4]);
 
 	/* Depends on U33, U31 */
-	U44 = U52 = I * VAR(VARIABLE_K2) / 3.0 *
+	U44 = U52 = I * PARAM(K_2) / 3.0 *
 		(I * l5 * U33 + I * l4 * U31 - l2 * y[V3]);
 
 	/* Depends on nothing */
-	U222 = VAR(VARIABLE_K2) / 3.0 *
+	U222 = PARAM(K_2) / 3.0 *
 		(y[V] + l2 * y[V2] + l5 * y[V5] + l4 * y[V4]);
 
 	/* Depends on U51 */
-	U422 = -I * VAR(VARIABLE_K2) / 3.0 *
+	U422 = -I * PARAM(K_2) / 3.0 *
 		(y[V1] + I * l2 * y[V4] + I * l4 * y[V5] + l5 * U51);
 
 	/* Depends on U22, U42, U222, U422 */
-	U54 = -VAR(VARIABLE_K1) / 4.0 *
+	U54 = -PARAM(K_1) / 4.0 *
 		(l1 * U22 + 2.0 * l3 * U42 - I * l4 * U222 - 2.0 * I * l5 *
 		 U422);
 
 	/* Depends on U42, U52 */
-	U53 = -VAR(VARIABLE_K1) / 4.0 *
+	U53 = -PARAM(K_1) / 4.0 *
 		(y[V2] + I * l1 * y[V4] + 2.0 * I * l3 * y[V5] + l4 * U42 +
 		 2.0 * l5 * U52);
 
 	/* Depends on U31, U33, U51, U53 */
-	U333 = -I * VAR(VARIABLE_K1) / 4.0 *
+	U333 = -I * PARAM(K_1) / 4.0 *
 		(3.0 * y[V3] + l1 * U31 + 2.0 * l3 * U33 + l4 * U51 + 2.0 *
 		 l5 * U53);
 
 	/* Depends on U31, U43 */
-	U331 = VAR(VARIABLE_K1) / 4.0 *
+	U331 = PARAM(K_1) / 4.0 *
 		(l1 * y[V3] - 2.0 * I * l3 * U31 - 2.0 * I * y[V1] + l4 *
 		 y[V5] - 2.0 * I * l5 * U43);
 
 	/* Depends on U33, U333, U331 */
-	U55 = -VAR(VARIABLE_K2) / 3.0 *
+	U55 = -PARAM(K_2) / 3.0 *
 		(l2 * U33 - I * l5 * U333 - I * l4 * U331);
 
 	f[V] =  y[V1] * PARAM(LAMBDA_1) +
@@ -176,21 +172,21 @@ static void calculate(catastrophe_t *const catastrophe,
 	assert(point_array);
 
 	equation->initial_vector[V] = 0.5 / sqrt(3.0) * g13 * g14 *
-		cexp(I * VAR(VARIABLE_K1) * M_PI / 8.0);
+		cexp(I * PARAM(K_1) * M_PI / 8.0);
 
 	equation->initial_vector[V1] = 0;
 
-	equation->initial_vector[V2] = -VAR(VARIABLE_K2) *
+	equation->initial_vector[V2] = -PARAM(K_2) *
 		(1.0 / (2.0 * sqrt(3.0))) * g23 * g14 *
-		cexp(I * VAR(VARIABLE_K1) * M_PI / 8.0);
+		cexp(I * PARAM(K_1) * M_PI / 8.0);
 
 	equation->initial_vector[V3] = (I / (2.0 * sqrt(3.0))) * g13 * g34 *
-		cexp(I * VAR(VARIABLE_K1) * 3.0 * M_PI / 8.0);
+		cexp(I * PARAM(K_1) * 3.0 * M_PI / 8.0);
 
 	equation->initial_vector[V4] = 0;
 
-	equation->initial_vector[V5] = -VAR(VARIABLE_K2) / (2.0 * sqrt(3.0)) *
-		g23 * g34 * cexp(I * VAR(VARIABLE_K1) * 3.0 * M_PI / 8.0);
+	equation->initial_vector[V5] = -PARAM(K_2) / (2.0 * sqrt(3.0)) *
+		g23 * g34 * cexp(I * PARAM(K_1) * 3.0 * M_PI / 8.0);
 
 	cmplx_runge_kutta(0.0, 1.0, 0.01, catastrophe);
 
@@ -205,10 +201,8 @@ static catastrophe_desc_t cmplx_catastrophe_Esub6_desc = {
 	.type = CT_COMPLEX,
 	.sym_name = "Esub6",
 	.fabric = catastrophe_fabric,
-	.num_parameters = 5,
-	.num_variables = 2,
+	.num_parameters = 7,
 	.par_names = par_names,
-	.var_names = var_names,
 	.equation.cmplx = cmplx_catastrophe_Esub6_function,
 	.num_equations = 6,
 	.calculate = calculate

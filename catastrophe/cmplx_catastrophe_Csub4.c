@@ -11,6 +11,7 @@ enum parameters {
 	LAMBDA_1 = 0,
 	LAMBDA_2,
 	LAMBDA_3,
+	K
 };
 
 enum components {
@@ -19,18 +20,13 @@ enum components {
 	V2
 };
 
-enum variables {
-	K = 0
-};
-
 enum storage_entries {
 	Asub3 = 0,
 	Asub3dl1,
 	Asub3dl2
 };
 
-static char *par_names[] = {"l1", "l2", "l3", NULL};
-static char *var_names[] = {"k", NULL};
+static char *par_names[] = {"l1", "l2", "l3", "k", NULL};
 
 void cmplx_catastrophe_Asub3_function(
 		const catastrophe_t *const catastrophe,
@@ -52,7 +48,7 @@ void cmplx_catastrophe_Csub4_function(
 	U01 = I * (I * STORAGE_COMPLEX(Asub3) - l3 * y[V]);
 	U02 = I * STORAGE_COMPLEX(Asub3dl1) - l3 * U01;
 	U12 = I * (I * STORAGE_COMPLEX(Asub3dl2) - l3 * U02);
-	U03 = I * (4.0 * VAR(K) * U12 + 2.0 * I * l2 * U01 - l1 * y[V]);
+	U03 = I * (4.0 * PARAM(K) * U12 + 2.0 * I * l2 * U01 - l1 * y[V]);
 
 	f[V] =  PARAM(LAMBDA_1) * U01 +
 		PARAM(LAMBDA_2) * U02 +
@@ -107,10 +103,8 @@ static catastrophe_desc_t cmplx_catastrophe_Csub4_desc = {
 	.type = CT_COMPLEX,
 	.sym_name = "Csub4",
 	.fabric = catastrophe_fabric,
-	.num_parameters = 3,
-	.num_variables = 4,
+	.num_parameters = 4,
 	.par_names = par_names,
-	.var_names = var_names,
 	.equation.cmplx = cmplx_catastrophe_Csub4_function,
 	.num_equations = 3,
 	.calculate = calculate

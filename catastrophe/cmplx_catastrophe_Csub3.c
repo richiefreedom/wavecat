@@ -5,7 +5,8 @@
 
 enum parameters {
 	LAMBDA_1 = 0,
-	LAMBDA_2
+	LAMBDA_2,
+	K
 };
 
 enum components {
@@ -13,17 +14,12 @@ enum components {
 	V1
 };
 
-enum variables {
-	K = 0,
-};
-
 enum storage_entries {
 	airy = 0,
 	dairy
 };
 
-static char *par_names[] = {"l1", "l2", NULL};
-static char *var_names[] = {"k", NULL};
+static char *par_names[] = {"l1", "l2", "k", NULL};
 
 void cmplx_catastrophe_Csub3_function(
 		const catastrophe_t *const catastrophe,
@@ -36,8 +32,8 @@ void cmplx_catastrophe_Csub3_function(
 	l1 = PARAM(LAMBDA_1) * t;
 	l2 = PARAM(LAMBDA_2) * t;
 
-	U01 = I * (I * STORAGE_COMPLEX(airy) - l2 * y[V]);	
-	U02 = I * (3.0 * VAR(K) * I * (I * STORAGE_COMPLEX(dairy) - l2 * U01) - l1 * y[V]);
+	U01 = I * (I * STORAGE_COMPLEX(airy) - l2 * y[V]);
+	U02 = I * (3.0 * PARAM(K) * I * (I * STORAGE_COMPLEX(dairy) - l2 * U01) - l1 * y[V]);
 
 	f[V] = PARAM(LAMBDA_1) * U01 + PARAM(LAMBDA_2) * U02;
 }
@@ -88,7 +84,7 @@ static void calculate(catastrophe_t *const catastrophe,
 	STORAGE_COMPLEX(airy) = equation->resulting_vector[V];
 	STORAGE_COMPLEX(dairy) = equation->resulting_vector[V1];
 
-	equation->initial_vector[V] = M_PI * (1.0 - VAR(K)/3.0);
+	equation->initial_vector[V] = M_PI * (1.0 - PARAM(K)/3.0);
 	/* A simple hack to reduce calculation time. */
 	equation->num_equations = 1;
 	equation_set_function(equation, cmplx_catastrophe_Csub3_function);
@@ -105,10 +101,8 @@ static catastrophe_desc_t cmplx_catastrophe_Csub3_desc = {
 	.type = CT_COMPLEX,
 	.sym_name = "Csub3",
 	.fabric = catastrophe_fabric,
-	.num_parameters = 2,
-	.num_variables = 3,
+	.num_parameters = 3,
 	.par_names = par_names,
-	.var_names = var_names,
 	.equation.cmplx = cmplx_catastrophe_Csub3_function,
 	.num_equations = 2,
 	.calculate = calculate

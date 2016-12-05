@@ -9,12 +9,9 @@ enum parameters {
 	LAMBDA_2,
 	LAMBDA_3,
 	LAMBDA_4,
-	ALPHA
-};
-
-enum variables {
-	VARIABLE_K1 = 0,
-	VARIABLE_K2,
+	ALPHA,
+	K_1,
+	K_2
 };
 
 enum storage_entries {
@@ -32,18 +29,17 @@ enum storage_entries {
 	V22M
 };
 
-static char *par_names[] = {"l1", "l2", "l3", "l4", "a", NULL};
-static char *var_names[] = {"k1", "k2", NULL};
+static char *par_names[] = {"l1", "l2", "l3", "l4", "a", "k1", "k2", NULL};
 
 static void function_1(const catastrophe_t *const catastrophe,
 		const double t, const double *y, double *const f)
 {
-	double l3;	
+	double l3;
 
 	l3 = PARAM(LAMBDA_3) * t;
 
-	f[0] = -VAR(VARIABLE_K1) * 0.5 * PARAM(LAMBDA_3) * (1.0 - l3 * y[1]);
-	f[1] = -VAR(VARIABLE_K1) * 0.5 * PARAM(LAMBDA_3) * l3 * y[0];
+	f[0] = -PARAM(K_1) * 0.5 * PARAM(LAMBDA_3) * (1.0 - l3 * y[1]);
+	f[1] = -PARAM(K_1) * 0.5 * PARAM(LAMBDA_3) * l3 * y[0];
 }
 
 static void function_2(const catastrophe_t *const catastrophe,
@@ -85,7 +81,7 @@ static void catastrophe_Ksub4_2_function(
 	l4 = PARAM(LAMBDA_4) * t;
 	a = PARAM(ALPHA) * t;
 
-	d = a * a - 4.0 * VAR(VARIABLE_K1) * VAR(VARIABLE_K2);
+	d = a * a - 4.0 * PARAM(K_1) * PARAM(K_2);
 
 	/* U03 */
 	u03r = -0.5 *
@@ -188,12 +184,12 @@ static void calculate(catastrophe_t *const catastrophe,
 	const double g34 = 1.225416702;
 
 	/* Precalculate some trigonometric functions */
-	const double cs1 = cos(VAR(VARIABLE_K1) * M_PI / 4.0);
-	const double sn1 = sin(VAR(VARIABLE_K1) * M_PI / 4.0);
-	const double c8  = cos(VAR(VARIABLE_K2) * M_PI / 8.0);
-	const double s8  = sin(VAR(VARIABLE_K2) * M_PI / 8.0);
-	const double s38 = sin(VAR(VARIABLE_K2) * 3.0 * M_PI / 8.0);
-	const double c38 = cos(VAR(VARIABLE_K2) * 3.0 * M_PI / 8.0);
+	const double cs1 = cos(PARAM(K_1) * M_PI / 4.0);
+	const double sn1 = sin(PARAM(K_1) * M_PI / 4.0);
+	const double c8  = cos(PARAM(K_2) * M_PI / 8.0);
+	const double s8  = sin(PARAM(K_2) * M_PI / 8.0);
+	const double s38 = sin(PARAM(K_2) * 3.0 * M_PI / 8.0);
+	const double c38 = cos(PARAM(K_2) * 3.0 * M_PI / 8.0);
 
 	double module;
 	double phase;
@@ -278,10 +274,8 @@ static catastrophe_desc_t catastrophe_Ksub4_2_desc = {
 	.type = CT_REAL,
 	.sym_name = "Ksub4_2",
 	.fabric = catastrophe_fabric,
-	.num_parameters = 5,
-	.num_variables = 14,
+	.num_parameters = 7,
 	.par_names = par_names,
-	.var_names = var_names,
 	.equation.real = catastrophe_Ksub4_2_function,
 	.num_equations = 6,
 	.calculate = calculate

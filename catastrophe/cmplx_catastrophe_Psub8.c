@@ -353,7 +353,6 @@ static catastrophe_desc_t cmplx_catastrophe_Psub8_desc = {
 	.sym_name = "Psub8",
 	.fabric = catastrophe_fabric,
 	.num_parameters = 7,
-	.num_variables = 0,
 	.par_names = par_names,
 	.equation.cmplx = cmplx_catastrophe_Psub8_function,
 	.num_equations = 8,

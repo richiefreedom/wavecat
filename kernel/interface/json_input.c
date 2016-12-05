@@ -13,12 +13,11 @@
 #define TOK_ARRAY(tok)     ((tok).type == JSMN_ARRAY)
 #define TOK_STRING(tok)    ((tok).type == JSMN_STRING)
 
-/* Maximum variable or parameter name length. */
+/* Maximum parameter name length. */
 #define MAX_NAME_LEN       80
 
 /* Derive these definitions from kernel/core/config.h */
 #define MAX_PARAMETERS     CONFIG_CAT_MAX_PARAMETERS
-#define MAX_VARIABLES      CONFIG_CAT_MAX_VARIABLES
 
 /*
  * substrcpy() - copy a substring to some other place.
@@ -52,8 +51,6 @@ static inline int substrcpy(char *dst, const char *src,
 enum jsi_parse_state {
 	PARSE_TOP_KEY = 0,
 	PARSE_NAME_VALUE,
-	PARSE_VAR_KEY,
-	PARSE_VAR_VALUE,
 	PARSE_PAR_KEY,
 	PARSE_PAR_VALUE,
 	PARSE_PAR_ARR_0,
@@ -65,8 +62,6 @@ enum jsi_parse_state {
 static char *state_str[] = {
 	"PARSE_TOP_KEY",
 	"PARSE_NAME_VALUE",
-	"PARSE_VAR_KEY",
-	"PARSE_VAR_VALUE",
 	"PARSE_PAR_KEY",
 	"PARSE_PAR_VALUE",
 	"PARSE_PAR_ARR_0",
@@ -78,8 +73,6 @@ static char *state_str[] = {
 struct jsi_parse_cont {
 	parameter_t       parameter[MAX_PARAMETERS];
 	unsigned int      param_index;
-	variable_t        variable[MAX_VARIABLES];
-	unsigned int      var_index;
 	char              name[MAX_NAME_LEN];
 	int               is_phase;
 
@@ -92,7 +85,6 @@ static inline int jsi_parse_cont_init(struct jsi_parse_cont *jpc)
 		return -1;
 
 	jpc->param_index = 0;
-	jpc->var_index   = 0;
 	jpc->is_phase    = 0;
 	jpc->state       = PARSE_TOP_KEY;
 
@@ -229,8 +221,6 @@ jsi_parse_prim( struct jsi_parse_cont *jpc,
 				jpc->state = PARSE_NAME_VALUE;
 			} else if (0 == strcmp(temp, "params")) {
 				jpc->state = PARSE_PAR_KEY;
-			} else if (0 == strcmp(temp, "vars")) {
-				jpc->state = PARSE_VAR_KEY;
 			} else if (0 == strcmp(temp, "mode")) {
 				jpc->state = PARSE_MODE;
 			} else {
@@ -239,12 +229,6 @@ jsi_parse_prim( struct jsi_parse_cont *jpc,
 				CGI_ERROR("Incorrect key at the top level");
 				goto out;
 			}
-			break;
-		case PARSE_VAR_VALUE:
-			jpc->variable[jpc->var_index].cur_value =
-				atof(temp);
-			jpc->var_index++;
-			jpc->state = PARSE_VAR_KEY;
 			break;
 		case PARSE_PAR_VALUE:
 			jpc->parameter[jpc->param_index].min_value =
@@ -278,11 +262,6 @@ jsi_parse_prim( struct jsi_parse_cont *jpc,
 				temp);
 			jpc->state = PARSE_PAR_VALUE;
 			break;
-		case PARSE_VAR_KEY:
-			strcpy(jpc->variable[jpc->var_index].sym_name,
-				temp);
-			jpc->state = PARSE_VAR_VALUE;
-			break;
 		default:
 			err = -1;
 			fprintf(stderr, "Incorrect state (primitive)\n");
@@ -310,8 +289,7 @@ jsi_parse_obj( struct jsi_parse_cont *jpc,
 	nr_elems *= 2; /* Due to degradation in jsmn library. */
 
 	if (jpc->state != PARSE_TOP_KEY &&
-		jpc->state != PARSE_PAR_KEY &&
-		jpc->state != PARSE_VAR_KEY)
+		jpc->state != PARSE_PAR_KEY)
 	{
 		fprintf(stderr, "Incorrect state (obj)\n");
 		CGI_ERROR("Cannot parse the object");
@@ -438,7 +416,7 @@ int json_input(const char *json_str)
 			return -1;
 		}
 		catastrophe = catastrophe_desc->fabric(catastrophe_desc,
-				jpc.parameter, jpc.variable);
+				jpc.parameter);
 		if (!catastrophe)
 			return -1;
 		if (catastrophe_parallel_loop(catastrophe))

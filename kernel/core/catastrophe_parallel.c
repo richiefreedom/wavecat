@@ -103,7 +103,7 @@ int catastrophe_loop_smp(catastrophe_t *catastrophe)
 		p1_min = p1_max;
 
 		new_cat = catastrophe_desc->fabric(catastrophe_desc,
-				catastrophe->parameter, catastrophe->variable);
+				catastrophe->parameter);
 
 		if (!new_cat) {
 			WAVECAT_ERROR(-1);

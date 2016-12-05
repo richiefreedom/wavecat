@@ -13,7 +13,6 @@
 #define MAX_NAME_LEN 80
 
 #define PARAM(num)    (catastrophe->parameter[(num)].cur_value)
-#define VAR(num)      (catastrophe->variable[(num)].cur_value)
 #define STORAGE_REAL(num)     (((equation_t *)(catastrophe->equation))->storage[(num)])
 #define STORAGE_COMPLEX(num)  (((cmplx_equation_t *)(catastrophe->equation))->storage[(num)])
 
@@ -26,18 +25,12 @@ struct parameter_s {
 	char           sym_name[MAX_NAME_LEN];
 };
 
-struct variable_s {
-	double cur_value;
-	char   sym_name[MAX_NAME_LEN];
-};
-
 enum catastrophe_type_e {
 	CT_REAL = 0,
 	CT_COMPLEX,
 };
 
 typedef struct parameter_s         parameter_t;
-typedef struct variable_s          variable_t;
 typedef enum   catastrophe_type_e  catastrophe_type_t;
 
 typedef struct catastrophe_s catastrophe_t;
@@ -47,7 +40,7 @@ typedef void (*catastrophe_calculate_t)(catastrophe_t *const catastrophe,
 
 typedef struct catastrophe_desc_s catastrophe_desc_t;
 typedef catastrophe_t *(*catastrophe_fabric_t)(catastrophe_desc_t *desc,
-		parameter_t *parameter, variable_t *variable);
+		parameter_t *parameter);
 
 struct catastrophe_desc_s {
 	catastrophe_type_t   type;
@@ -57,10 +50,8 @@ struct catastrophe_desc_s {
 	catastrophe_fabric_t fabric;
 
 	unsigned int         num_parameters;
-	unsigned int         num_variables;
 
 	char               **par_names;
-	char               **var_names;
 
 	union {
 		equation_function_t        real;
@@ -84,9 +75,6 @@ struct catastrophe_s {
 
 	struct parameter_s    parameter[CONFIG_CAT_MAX_PARAMETERS];
 	unsigned int          num_parameters;
-
-	struct variable_s     variable[CONFIG_CAT_MAX_VARIABLES];
-	unsigned int          num_variables;
 
 	void                 *equation;
 	point_array_t        *point_array;
@@ -177,7 +165,7 @@ catastrophe_is_pair_correct(uint_pair_t *pair)
 int catastrophe_loop(catastrophe_t *const catastrophe);
 
 catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
-		parameter_t *parameter, variable_t *variable);
+		parameter_t *parameter);
 
 void register_catastrophe_desc(catastrophe_desc_t *cd);
 void unregister_catastrophe_desc(catastrophe_desc_t *cd);

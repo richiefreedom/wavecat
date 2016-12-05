@@ -21,16 +21,6 @@ static int compare(const void *l, const void *r)
 		}
 	}
 
-	/* Check variables alse if the objects are still identical. */
-	for (i = 0; i < left->num_variables; i++) {
-		if (left->variable[i] != right->variable[i]) {
-			if (left->variable[i] < right->variable[i])
-				return -1;
-
-			return 1;
-		}
-	}
-
 	return 0;
 }
 

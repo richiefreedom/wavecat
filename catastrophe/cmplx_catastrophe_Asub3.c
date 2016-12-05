@@ -79,7 +79,6 @@ static catastrophe_desc_t cmplx_catastrophe_Asub3_desc = {
 	.sym_name = "Asub3",
 	.fabric = catastrophe_fabric,
 	.num_parameters = 2,
-	.num_variables = 0,
 	.par_names = par_names,
 	.equation.cmplx = cmplx_catastrophe_Asub3_function,
 	.num_equations = 3,

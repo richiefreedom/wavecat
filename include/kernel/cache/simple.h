@@ -7,9 +7,7 @@
 
 struct cached_result {
 	double         parameter[CONFIG_CAT_MAX_PARAMETERS];
-	double         variable[CONFIG_CAT_MAX_VARIABLES];
 	unsigned int   num_parameters;
-	unsigned int   num_variables;
 	point_t        point;
 };
 

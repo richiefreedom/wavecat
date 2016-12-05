@@ -12,11 +12,8 @@ enum indexes {
 enum parameters {
 	LAMBDA_1 = 0,
 	LAMBDA_2,
-	LAMBDA_3
-};
-
-enum variables {
-	VARIABLE_K = 0
+	LAMBDA_3,
+	K
 };
 
 enum storage_entries {
@@ -28,8 +25,7 @@ enum storage_entries {
 	VA3_02M
 };
 
-static char *par_names[] = {"l1", "l2", "l3", NULL};
-static char *var_names[] = {"k", NULL};
+static char *par_names[] = {"l1", "l2", "l3", "k", NULL};
 
 void catastrophe_Csub4_function(const catastrophe_t *const catastrophe,
 		const double t, const double *y, double *const f)
@@ -43,8 +39,8 @@ void catastrophe_Csub4_function(const catastrophe_t *const catastrophe,
 	param1 = catastrophe->parameter[LAMBDA_1].cur_value;
 	param2 = catastrophe->parameter[LAMBDA_2].cur_value;
 	param3 = catastrophe->parameter[LAMBDA_3].cur_value;
+	k = catastrophe->parameter[K].cur_value;
 
-	k = catastrophe->variable[VARIABLE_K].cur_value;
 	va3r = STORAGE_REAL(VA3R);
 	va3m = STORAGE_REAL(VA3M);
 	va3_01r = STORAGE_REAL(VA3_01R);
@@ -142,10 +138,8 @@ static catastrophe_desc_t catastrophe_Csub4_desc = {
 	.type = CT_REAL,
 	.sym_name = "Csub4",
 	.fabric = catastrophe_fabric,
-	.num_parameters = 3,
-	.num_variables = 7,
+	.num_parameters = 4,
 	.par_names = par_names,
-	.var_names = var_names,
 	.equation.real = catastrophe_Csub4_function,
 	.num_equations = 6,
 	.calculate = calculate

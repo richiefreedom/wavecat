@@ -197,7 +197,6 @@ static catastrophe_desc_t cmplx_catastrophe_Fsub1_0_desc = {
 	.sym_name = "Fsub1_0",
 	.fabric = catastrophe_fabric,
 	.num_parameters = 5,
-	.num_variables = 2,
 	.par_names = par_names,
 	.equation.cmplx = cmplx_catastrophe_Fsub1_0_function,
 	.num_equations = 4,

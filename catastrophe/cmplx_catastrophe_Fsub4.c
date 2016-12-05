@@ -11,6 +11,7 @@ enum parameters {
 	LAMBDA_1 = 0,
 	LAMBDA_2,
 	LAMBDA_3,
+	K
 };
 
 enum components {
@@ -18,17 +19,12 @@ enum components {
 	V1
 };
 
-enum variables {
-	K = 0
-};
-
 enum storage_entries {
 	Ai = 0,
 	Aid
 };
 
-static char *par_names[] = {"l1", "l2", "l3", NULL};
-static char *var_names[] = {"k", NULL};
+static char *par_names[] = {"l1", "l2", "l3", "k", NULL};
 
 void cmplx_catastrophe_Fsub4_function(
 		const catastrophe_t *const catastrophe,
@@ -42,12 +38,12 @@ void cmplx_catastrophe_Fsub4_function(
 	l2 = PARAM(LAMBDA_2) * t;
 	l3 = PARAM(LAMBDA_3) * t;
 
-	U02 = 0.5 * (-VAR(K)) * (I * (l2 * y[V] - I * l3 * y[V1]) + STORAGE_COMPLEX(Ai));
+	U02 = 0.5 * (-PARAM(K)) * (I * (l2 * y[V] - I * l3 * y[V1]) + STORAGE_COMPLEX(Ai));
 
-	U01 = 0.5 * VAR(K) * (I * STORAGE_COMPLEX(Aid) - l2 * y[V1] + I/3.0 * l3 *
+	U01 = 0.5 * PARAM(K) * (I * STORAGE_COMPLEX(Aid) - l2 * y[V1] + I/3.0 * l3 *
 			(l1 * y[V] - I * l3 * U02));
 
-	U22 = 0.5 * VAR(K) / I * (1.0 + l2 * U02 + l3 * U01);
+	U22 = 0.5 * PARAM(K) / I * (1.0 + l2 * U02 + l3 * U01);
 
 	U13 = -I/3.0 * (l1 * U02 - I * l3 * U22);
 
@@ -60,7 +56,7 @@ static void cmplx_catastrophe_Frenaile_function(
 		const double t, const double complex *y,
 		double complex *const f)
 {
-	f[V] = -VAR(K) * 0.5 * PARAM(LAMBDA_2) *
+	f[V] = -PARAM(K) * 0.5 * PARAM(LAMBDA_2) *
 		(1.0 + I * PARAM(LAMBDA_2) * t * y[V]);
 }
 
@@ -105,7 +101,7 @@ static void calculate(catastrophe_t *const catastrophe,
 	assert(point_array);
 
 	equation->initial_vector[V] = 0.5 * sqrt(M_PI) *
-		cexp(I * VAR(K) * M_PI / 4.0);
+		cexp(I * PARAM(K) * M_PI / 4.0);
 	equation_set_function(equation, cmplx_catastrophe_Frenaile_function);
 	cmplx_runge_kutta(0.0, 1.0, 0.01, catastrophe);
 	F2 = equation->resulting_vector[V];
@@ -134,10 +130,8 @@ static catastrophe_desc_t cmplx_catastrophe_Fsub4_desc = {
 	.type = CT_COMPLEX,
 	.sym_name = "Fsub4",
 	.fabric = catastrophe_fabric,
-	.num_parameters = 3,
-	.num_variables = 3,
+	.num_parameters = 4,
 	.par_names = par_names,
-	.var_names = var_names,
 	.equation.cmplx = cmplx_catastrophe_Fsub4_function,
 	.num_equations = 2,
 	.calculate = calculate

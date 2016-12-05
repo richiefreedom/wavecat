@@ -86,11 +86,6 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 	for (i = 0; i < catastrophe->num_parameters; i++) {
 		temp_key.parameter[i] = catastrophe->parameter[i].cur_value;
 	}
-
-	temp_key.num_variables = catastrophe->num_variables;
-	for (i = 0; i < catastrophe->num_variables; i++) {
-		temp_key.variable[i] = catastrophe->variable[i].cur_value;
-	}
 #endif
 
 	for (i = 0; i < p1_steps; i++) {
@@ -192,34 +187,8 @@ static int bind_parameter_names(catastrophe_desc_t *desc,
 	return 0;
 }
 
-static int bind_variable_names(catastrophe_desc_t *desc,
-		catastrophe_t *cat, variable_t *var)
-{
-	unsigned int i, j;
-
-	for (i = 0; desc->var_names[i] != NULL; i++) {
-		assert(i < desc->num_variables);
-		for (j = 0; j < desc->num_variables; j++) {
-			if (strcmp(var[j].sym_name, desc->var_names[i]) == 0) {
-				cat->variable[i] = var[j];
-				break;
-			}
-		}
-		if (j == desc->num_variables) {
-			fprintf(stderr, "Error: unbound variable %s.\n",
-					desc->var_names[i]);
-			CGI_ERROR("Not all variables are bound");
-			return -1;
-		}
-	}
-
-	cat->num_variables = desc->num_variables;
-
-	return 0;
-}
-
 catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
-		parameter_t *parameter, variable_t *variable)
+		parameter_t *parameter)
 {
 	catastrophe_t *catastrophe;
 	point_array_t *point_array;
@@ -242,15 +211,6 @@ catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
 		for (i = 0; i < desc->num_parameters; i++)
 			catastrophe->parameter[i] = parameter[i];
 		catastrophe->num_parameters = desc->num_parameters;
-	}
-
-	if (desc->var_names) {
-		if (bind_variable_names(desc, catastrophe, variable))
-			goto error_bind_vars;
-	} else {
-		for (i = 0; i < desc->num_variables; i++)
-			catastrophe->variable[i] = variable[i];
-		catastrophe->num_variables = desc->num_variables;
 	}
 
 	switch (desc->type) {
