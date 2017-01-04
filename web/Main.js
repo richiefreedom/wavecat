@@ -170,11 +170,12 @@ function panelSubmitClick(e)
 	var panelInput = document.getElementById("panelInput");
 	var panelFileUpload = document.getElementById("panelFileUpload");
 	var panelProgress = document.getElementById("panelProgress");
+	var panelFileSlide = document.getElementById("panelFileSlide");
 	var files = panelFileUpload.files;
 
 	var formData = new FormData();
 
-	if (0 != files.length) {
+	if (panelFileSlide.className == "shown") {
 		for (var i = 0; i < files.length; i++) {
 			var file = files[i];
 			formData.append("file", file, file.name);
@@ -201,6 +202,7 @@ function panelChangeModeClick(e)
 	var panelInputSlide = document.getElementById("panelInputSlide");
 	var panelFileSlide = document.getElementById("panelFileSlide");
 	var panelChangeMode = document.getElementById("panelChangeMode");
+	var panelFileUpload = document.getElementById("panelFileUpload");
 
 	if (panelInputSlide.className == "shown") {
 		panelInputSlide.className = "hidden";
