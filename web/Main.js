@@ -168,10 +168,22 @@ function ajaxCallback()
 function panelSubmitClick(e)
 {
 	var panelInput = document.getElementById("panelInput");
+	var panelFileUpload = document.getElementById("panelFileUpload");
 	var panelProgress = document.getElementById("panelProgress");
+	var files = panelFileUpload.files;
 
-	AJAXSendTextPost(XMLHTTP, "wavecat.exe", panelInput.value,
-			ajaxCallback);
+	var formData = new FormData();
+
+	if (0 != files.length) {
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			formData.append("file", file, file.name);
+		}
+	} else {
+		formData.append("string", panelInput.value);
+	}
+
+	AJAXSendTextPost(XMLHTTP, "wavecat.exe", formData, ajaxCallback);
 
 	panelProgress.className = "shown";
 }
@@ -184,10 +196,43 @@ function panelSelectChange(e)
 		panelInput.value = taskList[this.selectedIndex][1];
 }
 
+function panelChangeModeClick(e)
+{
+	var panelInputSlide = document.getElementById("panelInputSlide");
+	var panelFileSlide = document.getElementById("panelFileSlide");
+	var panelChangeMode = document.getElementById("panelChangeMode");
+
+	if (panelInputSlide.className == "shown") {
+		panelInputSlide.className = "hidden";
+		panelFileSlide.className = "shown";
+		panelChangeMode.value = configTranslations[configLanguage]["panelChangeModeFile"];
+	} else {
+		panelInputSlide.className = "shown";
+		panelFileSlide.className = "hidden";
+		panelChangeMode.value = configTranslations[configLanguage]["panelChangeModeInput"];
+	}
+
+}
+
+function translate()
+{
+	var translation = configTranslations[configLanguage];
+	if (translation) {
+		for (var key in translation) {
+			var obj = document.getElementById(key);
+			if (obj) {
+				obj.value = translation[key];
+				obj.innerHTML = translation[key];
+			}
+		}
+	}
+}
+
 function main(e)
 {
 	var panelSubmit = document.getElementById("panelSubmit");
 	var panelSelect = document.getElementById("panelSelect");
+	var panelChangeMode = document.getElementById("panelChangeMode");
 
 	panelSubmit.onclick = panelSubmitClick;
 	XMLHTTP = AJAXCreate();
@@ -197,6 +242,10 @@ function main(e)
 	}
 	panelSelect.selectedIndex = -1;
 	panelSelect.onchange = panelSelectChange;
+
+	panelChangeMode.onclick = panelChangeModeClick;
+
+	translate();
 }
 
 window.onload = main;
