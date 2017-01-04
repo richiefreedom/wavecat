@@ -92,7 +92,36 @@ int handle_scgi(void)
 
 		print_scgi_header();
 
-		handle_basic(sigie_buffer_get_content(buffer));
+		{
+			char *cont, *term, *top;
+			cont = term = sigie_buffer_get_content(buffer);
+			if (cont[0] != '-') {
+				fprintf(stderr, "Incorrect form data.\n");
+				fclose(out_file_desc);
+				goto out;
+			}
+			for (; *cont != '\r'; cont++);
+			*cont = '\0';
+			cont += 2;
+			top = strstr(cont, term);
+			if (NULL == top) {
+				fprintf(stderr,
+				"Unable to find a temination string.\n");
+				fclose(out_file_desc);
+				goto out;
+			}
+			*top = '\0';
+			cont = strstr(cont, "\r\n\r\n");
+			if (NULL == cont) {
+				fprintf(stderr,
+				"Unable to find start of content.\n");
+				fclose(out_file_desc);
+				goto out;
+			}
+			cont += 4;
+			fprintf(stderr, "Content: %s\n", cont);
+			handle_basic(cont);
+		}
 
 		fclose(out_file_desc);
 		sigie_buffer_destroy(buffer);
