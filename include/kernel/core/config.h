@@ -8,12 +8,10 @@
 #include <kernel/core/cgi.h>
 
 #define WAVECAT_ERROR(err) \
-	fprintf(stderr, "Error: %d (%s:%d:%s)\n", (err), __FILE__, __LINE__, \
-			__FUNCTION__)
+	fprintf(stderr, "Error: %d (%s:%d)\n", (err), __FILE__, __LINE__)
 
 #define WAVECAT_DEBUG_POINT() \
-	fprintf(stderr, "Debug point (%s:%d:%s)\n", __FILE__, __LINE__, \
-			__FUNCTION__)
+	fprintf(stderr, "Debug point (%s:%d)\n", __FILE__, __LINE__)
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
