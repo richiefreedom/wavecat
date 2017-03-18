@@ -101,5 +101,19 @@ var taskList = [
     k : 1 \n\
   } \n\
 }"
+	],
+	[
+	"Asub1Asub2Asub1Asub1",
+"{\n\
+  name: \"Asub1Asub2Asub1Asub1\", \n\
+  params: { \n\
+    l1: [-7, 7, 100], \n\
+    l2: [-7, 7, 100], \n\
+    l3: 0, \n\
+    a: 1, \n\
+    k1: 1.0, \n\
+    k2: 1.0 \n\
+  } \n\
+}"
 	]
 ];
