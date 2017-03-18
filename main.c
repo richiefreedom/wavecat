@@ -15,6 +15,17 @@ int plugin_loaddir(const char *dir_name);
 unsigned int cgi_mode = 0;
 FILE *out_file_desc;
 
+static struct sigie_connection *sigie_conn = NULL;
+static int need_exit = 0;
+
+void generic_signal_handler(int signum)
+{
+	printf("Forced quit. All the networking will be finished properly.\n");
+	need_exit = 1;
+	if (sigie_conn)
+		sigie_connection_destroy(sigie_conn);
+}
+
 /* This port will be used by SCGI mode by default. */
 #define SCGI_PORT 8000
 
@@ -46,25 +57,24 @@ static void print_scgi_header(void)
 int handle_scgi(void)
 {
 	struct sigie_buffer *buffer = NULL;
-	struct sigie_connection *conn;
 	int io_sock_fd = -1;
 	int err = 0;
 	int ret;
 
 	cgi_mode = 1;
 
-	conn = sigie_connection_create(SCGI_PORT);
-	if (!conn)
+	sigie_conn = sigie_connection_create(SCGI_PORT);
+	if (!sigie_conn)
 		return 1;
 
-	while (1) {
+	while (!need_exit) {
 		buffer = sigie_buffer_create();
 		if (!buffer) {
 			err = 2;
 			goto out;
 		}
 
-		io_sock_fd = sigie_accept(conn);
+		io_sock_fd = sigie_accept(sigie_conn);
 		if (-1 == io_sock_fd) {
 			err = 3;
 			goto out;
@@ -140,7 +150,8 @@ out:
 	if (buffer)
 		sigie_buffer_destroy(buffer);
 
-	sigie_connection_destroy(conn);
+	if (sigie_conn && !need_exit)
+		sigie_connection_destroy(sigie_conn);
 
 	return err;
 }
@@ -196,6 +207,7 @@ int handle_cgi(void)
 int main(int argc, char **argv)
 {
 	signal(SIGPIPE, SIG_IGN);
+	signal(SIGINT, generic_signal_handler);
 
 	plugin_loaddir("plugins");
 	out_file_desc = stdout;
