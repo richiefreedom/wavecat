@@ -58,11 +58,8 @@ static void Bsub3_function(
 	U12 = -(k * I / 3.0) *
 		(y[V] + l1 * y[V1] - 2.0 * I * l2 * U11);
 
-	STORAGE_COMPLEX(VB3L1L2) = f[V] = PARAM(LAMBDA_1) * y[V1] +
-		PARAM(LAMBDA_2) * (-I * U11);
-	STORAGE_COMPLEX(DVB3L1L2) = f[V1] = PARAM(LAMBDA_1) * U11 +
-		PARAM(LAMBDA_2) * U12;
-	STORAGE_COMPLEX(DDVB3L1L2) = (k / 3.0) * (l1 * f[V] - 2.0 * I * l2 * f[V1] - I);
+	f[V] = PARAM(LAMBDA_1) * y[V1] + PARAM(LAMBDA_2) * (-I * U11);
+	f[V1] = PARAM(LAMBDA_1) * U11 + PARAM(LAMBDA_2) * U12;
 }
 
 void cmplx_catastrophe_Asub1Asub2Asub1Asub1_function(
@@ -131,6 +128,12 @@ static void calculate(catastrophe_t *const catastrophe,
 		cexp(I * PARAM(K_2) * M_PI / 3.0);
 	equation_set_function(equation, Bsub3_function);
 	cmplx_runge_kutta(0.0, 1.0, 0.01, catastrophe);
+
+	STORAGE_COMPLEX(VB3L1L2) = equation->resulting_vector[V];
+	STORAGE_COMPLEX(DVB3L1L2) = equation->resulting_vector[V1];
+	STORAGE_COMPLEX(DDVB3L1L2) = (PARAM(K_2) / 3.) *
+		(PARAM(LAMBDA_1) * equation->resulting_vector[V] - 2 * I *
+		PARAM(LAMBDA_2) * equation->resulting_vector[V1] - I);
 
 	equation->initial_vector[V] = STORAGE_COMPLEX(VB2L3) * STORAGE_COMPLEX(VB3L1L2);
 	equation->initial_vector[V1] = STORAGE_COMPLEX(VB2L3) * STORAGE_COMPLEX(DVB3L1L2);
