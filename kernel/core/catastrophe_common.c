@@ -151,10 +151,18 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 			memcpy(result, &temp_key, sizeof(*result));
 			result->point.module = pa->array[i][j].module;
 			result->point.phase = pa->array[i][j].phase;
+#ifdef CONFIG_PARALLEL_COMP
+			pthread_spin_lock(
+				&catastrophe->descriptor->cache_root_lock);
+#endif
 			simple_cache_save_result(
 					&catastrophe->descriptor->cache_root,
 					result);
+#ifdef CONFIG_PARALLEL_COMP
+			pthread_spin_unlock(
+				&catastrophe->descriptor->cache_root_lock);
 #endif
+#endif /* CONFIG_CACHE_RESULT */
 		}
 	}
 
