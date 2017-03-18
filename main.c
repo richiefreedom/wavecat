@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 
 #include "thirdparty/sigie/sigie.h"
 
@@ -194,6 +195,7 @@ int handle_cgi(void)
 
 int main(int argc, char **argv)
 {
+	signal(SIGPIPE, SIG_IGN);
 
 	plugin_loaddir("plugins");
 	out_file_desc = stdout;
