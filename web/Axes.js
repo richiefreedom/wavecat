@@ -35,7 +35,7 @@ function drawAxesScaled(ctx, scale, x0, y0, experimentData)
 					x0+width-1, j);
 				drawTextScaled(ctx, scale,
 					(endY - j*dY).toFixed(1).toString(),
-					x0+width+10, j+2);
+					x0+width+10, height-j+2);
 			}
 			drawPixelScaled(ctx, scale, i, j);
 		}
