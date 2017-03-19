@@ -419,8 +419,11 @@ int json_input(const char *json_str)
 				jpc.parameter);
 		if (!catastrophe)
 			return -1;
-		if (catastrophe_parallel_loop(catastrophe))
+		if (catastrophe_parallel_loop(catastrophe)) {
+			CGI_ERROR("Error during computing");
+			destruct_catastrophe(catastrophe);
 			return -1;
+		}
 		if (!jpc.is_phase)
 			point_array_module_print_json(
 				catastrophe->point_array);
