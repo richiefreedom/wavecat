@@ -5,7 +5,7 @@ function AJAXCreate()
 	if (window.XMLHttpRequest)
 		xmlhttp = new XMLHttpRequest();
 	else
-		xmlhttp = new AcriveXObject("Microsoft.XMLHTTP");
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
 	return xmlhttp;
 }
