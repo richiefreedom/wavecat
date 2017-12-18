@@ -176,6 +176,10 @@ function panelSubmitClick(e)
 	var formData = new FormData();
 
 	if (panelFileSlide.className == "shown") {
+		if (!files.length) {
+			alert("You have to select a file for upload!");
+			return;
+		}
 		for (var i = 0; i < files.length; i++) {
 			var file = files[i];
 			formData.append("file", file, file.name);
