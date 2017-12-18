@@ -26,6 +26,14 @@ html, body {
 	overflow: auto;
 }
 
+
+@media only screen and (max-width: 768px) {
+	#sidePanelContainer {
+		max-width: 90%;
+		width: 90%;
+	}
+}
+
 #sidePanelContainer .wideControl {
 	margin: 16px 0;
 	width: 100%;
