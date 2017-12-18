@@ -1,12 +1,31 @@
 body {
 	background: #FFFFFF;
 	color: #222222;
-	font-family: Sans-Serif;
+	font-family: 'Oswald', sans-serif;
+}
+
+#headerContainer {
+	background-color: #660066;
+	color: #FFFFFF;
+	box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+#headerContainer h1 {
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+	font-family: 'Pacifico', cursive;
+}
+
+#menuButton {
+	font-size: 2em;
+	cursor: pointer;
 }
 
 #sidePanelContainer {
-	background: #222222;
-	color: #BBBBBB;
+	background: #F9E6FF;
+	color: #333333;
+	border: solid 4px #660066;
 }
 
 #sidePanelContainer h1, h2, h3 {
@@ -28,13 +47,28 @@ body {
 #sidePanelContainer input, select {
 	background: #111111;
 	border: none;
-	font: monospace;
 	color: #BBBBBB;
+	font-size: 1.2em;
+	font-family: 'Oswald', sans-serif;
 }
 
-#sidePanelContainer input:hover {
-	background: #990000;
-	color: #EEEEEE;
+#sidePanelContainer,
+#panelProgress,
+#sidePanelContainer select,
+#sidePanelContainer textarea,
+#sidePanelContainer input {
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+}
+
+#sidePanelContainer input:hover, select:hover {
+	background: #FF9900;
+	color: #111111;
+}
+
+#panelProgress {
+	background: #F9E6FF;
+	color: #333333;
+	border: solid 4px #660066;
 }
 
 #panelResponse {
@@ -54,7 +88,7 @@ body {
 }
 
 .taskDescription {
-	background: #EEEEEE;
+	background: #F9E6FF;
 	padding: 10px 10px 10px 150px;
 }
 
@@ -62,6 +96,13 @@ body {
 	background: #333333;
 	padding: 5px;
 	color: #EEEEEE;
+	text-align: middle;
+}
+
+.taskHeader:after, taskHeader:before {
+	content: "";
+	display: table;
+	clear: both;
 }
 
 .closeButton {
@@ -72,6 +113,6 @@ body {
 }
 
 .closeButton:hover {
-	background: #990000;
-	color: #EEEEEE;
+	background: #FF9900;
+	color: #111111;
 }

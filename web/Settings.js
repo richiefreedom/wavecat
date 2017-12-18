@@ -2,7 +2,7 @@ configLanguage = "ru"
 
 configTranslations = {
 	"ru": {
-		"panelTitle" : "Лаборатория WaveCat",
+		"panelTitle" : "Меню",
 		"panelChangeModeInput" : "Загрузить файл с заданием",
 		"panelChangeModeFile" : "Ввести текст задания",
 		"panelChangeMode" : "Загрузить файл с заданием",
@@ -17,7 +17,7 @@ configTranslations = {
 	},
 
 	"en": {
-		"panelTitle" : "WaveCat Playground",
+		"panelTitle" : "Menu",
 		"panelChangeModeInput" : "Upload a file with a task",
 		"panelChangeModeFile" : "Input a task as a text",
 		"panelChangeMode" : "Upload a file with a task",

@@ -9,41 +9,63 @@
 		<script type="text/javascript" src="TaskList.js"></script>
 		<script type="text/javascript" src="Main.js"></script>
 
+		<script type="text/javascript">
+		function menuButtonClick() {
+			sidePanel = document.getElementById("sidePanelContainer");
+			if (sidePanel.style.display === "block") {
+				sidePanel.style.display = "none";
+			} else {
+				sidePanel.style.display = "block";
+			}
+			/*
+			if (!sidePanel.classList.contains('appear')) {
+				sidePanel.classList.remove('disappear');
+				sidePanel.classList.add('appear');
+			} else {
+				sidePanel.classList.remove('appear');
+				sidePanel.classList.add('disappear');
+			}
+			*/
+		}
+		</script>
+
+		<link rel="stylesheet" href="fonts.css">
 		<link rel="stylesheet" type="text/css" href="layout.css" />
 		<link rel="stylesheet" type="text/css" href="scheme.css" />
 
 		<meta charset="utf-8">
 	</head>
 <body>
-<div id="panelProgress" class="hidden">
-	<img src="ajaxloader.gif"><br>
-	<span id="panelProgressLabel">В процессе</span>
+
+<div id="headerContainer">
+	<span id="menuButton" onclick="menuButtonClick()">☰ </span><h1>Wavecat</h1>
 </div>
 
 <div id="sidePanelContainer">
-	<h2 id="panelTitle">Лаборатория &laquo;WaveCat&raquo;</h2>
+	<h2 id="panelTitle">Меню</h2>
 	<strong id="panelResponseLabel">История выполнения команд:</strong><br>
-	<textarea id="panelResponse" class="wideControl"></textarea><br><br>
+	<textarea id="panelResponse" class="wideControl"></textarea><br>
 	<div id="panelInputSlide" class="shown">
-	<strong id="panelSelectLabel">Выбор шаблона запроса:</strong><br>
-	<select id="panelSelect" class="wideControl"></select><br><br>
-	<strong id="panelInputLabel">Командная строка:</strong><br>
-	<textarea id="panelInput" class="wideControl"></textarea><br>
-	<input id="panelContCheck" type="checkbox" checked>
-	<span id="panelContCheckLabel">Показывать контуры</span>
-	<br>
-	<input id="panelMoreCheck" type="checkbox">
-	<span id="panelMoreCheckLabel">Больше сечений</span>
+		<strong id="panelSelectLabel">Выбор шаблона запроса:</strong><br>
+		<select id="panelSelect" class="wideControl"></select><br>
+		<strong id="panelInputLabel">Командная строка:</strong><br>
+		<textarea id="panelInput" class="wideControl"></textarea><br>
+		<input id="panelContCheck" type="checkbox" checked>
+		<span id="panelContCheckLabel">Показывать контуры</span>
+		<input id="panelMoreCheck" type="checkbox">
+		<span id="panelMoreCheckLabel">Больше сечений</span>
 	</div>
-	<br><br>
 	<input id="panelChangeMode" type="button" value="Задание из файла" class="wideControl">
-	<br><br>
 	<div id="panelFileSlide" class="hidden">
-	<strong id="panelFileUploadLabel">Файл с заданием:</strong>
-	<input id="panelFileUpload" type="file">
+		<strong id="panelFileUploadLabel">Файл с заданием:</strong>
+		<input id="panelFileUpload" type="file">
 	</div>
-	<br><br>
 	<input id="panelSubmit" type="submit" value="Рассчитать" class="wideControl">
+</div>
+
+<div id="panelProgress" class="hidden">
+	<img src="ajaxloader.gif"><br>
+	<span id="panelProgressLabel">В процессе</span>
 </div>
 
 <div id="plotContainer">

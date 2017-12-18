@@ -5,41 +5,40 @@ html, body {
 	height: 100%;
 }
 
-#sidePanelContainer {
-	padding: 0px 10px 0px 10px;
-	float: right;
-	width: 300px;
+#headerContainer {
+	width: 100%;
+	height: 50px;
+	position: fixed;
+	padding: 0.01em 16px;
+}
 
-	min-height: 100%;
-	/* height: auto !important; */
-	height: 100%;
+#menuButton {
+	float: left;
+}
+
+#sidePanelContainer {
+	position: fixed;
+	top: 50px;
+	padding: 0px 10px 0px 10px;
+	display: none;
+	max-width: 50%;
+	max-height: 60%;
+	overflow: auto;
 }
 
 #sidePanelContainer .wideControl {
-	width: 290px;
-}
-
-#panelContCheck {
-	width: 30px;
-}
-
-#panelMoreCheck {
-	width: 30px;
+	margin: 16px 0;
+	width: 100%;
 }
 
 #plotContainer {
-	margin-right: 320px;
-
-	min-height: 100%;
-	/* height: auto !important; */
-	height: 100%;
-
-	overflow: scroll;
+	padding-top: 50px;
+	overflow: auto;
 }
 
 #panelProgress {
 	text-align: center;
-	position: absolute;
+	position: fixed;
 	width: 126px;
 	height: 60px;
 	top: 50%;
@@ -49,8 +48,7 @@ html, body {
 }
 
 .closeButton {
-	width: 18px;
-	height: 18px;
+	padding: 0 5px;
 	float: right;
 	text-align: center;
 }
