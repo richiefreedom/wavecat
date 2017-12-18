@@ -13,7 +13,8 @@ configTranslations = {
 		"panelResponseLabel" : "История выполнения команд",
 		"panelSelectLabel" : "Выбор шаблона запроса",
 		"panelInputLabel" : "Ввод текста запроса",
-		"panelFileUploadLabel" : "Выбрать файл с заданием"
+		"panelFileUploadLabel" : "Выбрать файл с заданием",
+		"alertNoFileUpload" : "Необходимо выбрать файл для загрузки"
 	},
 
 	"en": {
@@ -28,6 +29,7 @@ configTranslations = {
 		"panelResponseLabel" : "History of computing results:",
 		"panelSelectLabel" : "Template of a computing task:",
 		"panelInputLabel" : "Input of the task description:",
-		"panelFileUploadLabel" : "Select a task file:"
+		"panelFileUploadLabel" : "Select a task file:",
+		"alertNoFileUpload" : "You have to select a file for upload"
 	}
 }

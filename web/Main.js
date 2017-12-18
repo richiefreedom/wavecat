@@ -177,7 +177,7 @@ function panelSubmitClick(e)
 
 	if (panelFileSlide.className == "shown") {
 		if (!files.length) {
-			alert("You have to select a file for upload!");
+			alert(configTranslations[configLanguage]["alertNoFileUpload"]);
 			return;
 		}
 		for (var i = 0; i < files.length; i++) {
