@@ -31,7 +31,7 @@ function prepareCanvas(width, height)
 	close.innerHTML = "x";
 	close.onclick = closeClick;
 
-	header.innerHTML = "Задание №" + taskNum++;
+	header.innerHTML = "№" + taskNum++;
 	header.className = "taskHeader";
 
 	header.appendChild(close);
