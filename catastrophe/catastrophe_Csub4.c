@@ -91,9 +91,6 @@ static void calculate(catastrophe_t *const catastrophe,
 	double s38 = sin(k2 * 3.0 * M_PI / 8.0);
 	double c38 = cos(k2 * 3.0 * M_PI / 8.0);
 
-	double module;
-	double phase;
-
 	equation = catastrophe->equation;
 	point_array = catastrophe->point_array;
 
@@ -122,16 +119,6 @@ static void calculate(catastrophe_t *const catastrophe,
 	equation_set_function(equation, catastrophe_Csub4_function);
 
 	runge_kutta(0.0, 1.0, 0.001, catastrophe);
-
-	module = sqrt(equation->resulting_vector[0] *
-			equation->resulting_vector[0] +
-			equation->resulting_vector[1] *
-			equation->resulting_vector[1]);
-	phase = (180.0 / M_PI) * atan2(equation->resulting_vector[0],
-			equation->resulting_vector[1]);
-
-	point_array->array[i][j].module = module;
-	point_array->array[i][j].phase = phase;
 }
 
 static catastrophe_desc_t catastrophe_Csub4_desc = {

@@ -56,7 +56,8 @@ enum jsi_parse_state {
 	PARSE_PAR_ARR_0,
 	PARSE_PAR_ARR_1,
 	PARSE_PAR_ARR_2,
-	PARSE_MODE
+	PARSE_MODE,
+	PARSE_DERIV
 };
 
 static char *state_str[] = {
@@ -67,7 +68,8 @@ static char *state_str[] = {
 	"PARSE_PAR_ARR_0",
 	"PARSE_PAR_ARR_1",
 	"PARSE_PAR_ARR_2",
-	"PARSE_MODE"
+	"PARSE_MODE",
+	"PARSE_DERIV"
 };
 
 struct jsi_parse_cont {
@@ -75,6 +77,7 @@ struct jsi_parse_cont {
 	unsigned int      param_index;
 	char              name[MAX_NAME_LEN];
 	int               is_phase;
+	unsigned int      deriv;
 
 	enum jsi_parse_state state;
 };
@@ -87,6 +90,7 @@ static inline int jsi_parse_cont_init(struct jsi_parse_cont *jpc)
 	jpc->param_index = 0;
 	jpc->is_phase    = 0;
 	jpc->state       = PARSE_TOP_KEY;
+	jpc->deriv       = 0;
 
 	return 0;
 }
@@ -223,6 +227,8 @@ jsi_parse_prim( struct jsi_parse_cont *jpc,
 				jpc->state = PARSE_PAR_KEY;
 			} else if (0 == strcmp(temp, "mode")) {
 				jpc->state = PARSE_MODE;
+			} else if (0 == strcmp(temp, "deriv")) {
+				jpc->state = PARSE_DERIV;
 			} else {
 				err = -1;
 				fprintf(stderr, "Incorrect top key\n");
@@ -261,6 +267,10 @@ jsi_parse_prim( struct jsi_parse_cont *jpc,
 			strcpy(jpc->parameter[jpc->param_index].sym_name,
 				temp);
 			jpc->state = PARSE_PAR_VALUE;
+			break;
+		case PARSE_DERIV:
+			jpc->deriv = atoi(temp);
+			jpc->state = PARSE_TOP_KEY;
 			break;
 		default:
 			err = -1;
@@ -358,6 +368,14 @@ jsi_parse( struct jsi_parse_cont *jpc,
 	return 0;
 }
 
+static int
+is_deriv_correct(catastrophe_desc_t *desc, unsigned int deriv)
+{
+	return (CT_REAL == desc->type)?
+		(deriv < desc->num_equations / 2):
+		(deriv < desc->num_equations);
+}
+
 int json_input(const char *json_str)
 {
 	jsmn_parser parser;
@@ -415,8 +433,13 @@ int json_input(const char *json_str)
 			CGI_ERROR("Incorrect number of parameters");
 			return -1;
 		}
+		if (!is_deriv_correct(catastrophe_desc, jpc.deriv)) {
+			fprintf(stderr, "Incorrect derivative number\n");
+			CGI_ERROR("Incorrect derivative number");
+			return -1;
+		}
 		catastrophe = catastrophe_desc->fabric(catastrophe_desc,
-				jpc.parameter);
+				jpc.parameter, jpc.deriv);
 		if (!catastrophe)
 			return -1;
 		if (catastrophe_parallel_loop(catastrophe)) {

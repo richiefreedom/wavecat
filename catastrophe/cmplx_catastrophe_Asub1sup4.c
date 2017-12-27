@@ -74,9 +74,6 @@ static void calculate(catastrophe_t *const catastrophe,
 	cmplx_equation_t *equation;
 	point_array_t *point_array;
 
-	double module;
-	double phase;
-
 	const double sqrt_pi = sqrt(M_PI);
 
 	assert(catastrophe);
@@ -109,12 +106,6 @@ static void calculate(catastrophe_t *const catastrophe,
 	equation->initial_vector[V] = STORAGE_COMPLEX(F2l1) * STORAGE_COMPLEX(F2l2);
 	equation_set_function(equation, cmplx_catastrophe_Asub1sup4_function);
 	cmplx_runge_kutta(0.0, 1.0, 0.008, catastrophe);
-
-	module = cabs(equation->resulting_vector[V]);
-	phase = (180.0 / M_PI) * carg(equation->resulting_vector[V]);
-
-	point_array->array[i][j].module = module;
-	point_array->array[i][j].phase = phase;
 }
 
 static catastrophe_desc_t cmplx_catastrophe_Asub1sup4_desc = {

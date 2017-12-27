@@ -82,9 +82,6 @@ static void calculate(catastrophe_t *const catastrophe,
 	cmplx_equation_t *equation;
 	point_array_t *point_array;
 
-	double module;
-	double phase;
-
 	double complex F2;
 
 	const double g13 = 2.678938534;
@@ -118,12 +115,6 @@ static void calculate(catastrophe_t *const catastrophe,
 	equation->initial_vector[V1] = STORAGE_COMPLEX(Aid) * F2;
 	equation_set_function(equation, cmplx_catastrophe_Fsub4_function);
 	cmplx_runge_kutta(0.0, 1.0, 0.008, catastrophe);
-
-	module = cabs(equation->resulting_vector[V]);
-	phase = (180.0 / M_PI) * carg(equation->resulting_vector[V]);
-
-	point_array->array[i][j].module = module;
-	point_array->array[i][j].phase = phase;
 }
 
 static catastrophe_desc_t cmplx_catastrophe_Fsub4_desc = {

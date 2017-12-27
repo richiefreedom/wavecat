@@ -11,11 +11,13 @@ static DECLARE_LIST_HEAD(catastrophe_desc_list);
 
 void register_catastrophe_desc(catastrophe_desc_t *cd)
 {
+	unsigned int i;
 #ifdef CONFIG_CACHE_RESULT
 #ifdef CONFIG_PARALLEL_COMP
 	pthread_spin_init(&cd->cache_root_lock, PTHREAD_PROCESS_PRIVATE);
 #endif
-	cd->cache_root = NULL;
+	for (i = 0; i < cd->num_equations; i++)
+		cd->cache_root[i] = NULL;
 #endif
 	list_add_tail(&cd->list, &catastrophe_desc_list);
 }
@@ -48,6 +50,48 @@ catastrophe_desc_t *find_catastrophe_desc(const char *sym_name)
 	}
 
 	return NULL;
+}
+
+void save_computing_result(catastrophe_t *const catastrophe, unsigned int i,
+	unsigned int j)
+{
+	point_array_t *point_array;
+	double module = 0, phase = 0;
+
+	assert(catastrophe);
+	point_array = catastrophe->point_array;
+	assert(point_array);
+
+	switch (catastrophe->descriptor->type) {
+	case CT_REAL: {
+		equation_t *equation = catastrophe->equation;
+		assert(equation);
+
+		module = sqrt(
+			 equation->resulting_vector[catastrophe->deriv * 2] *
+			 equation->resulting_vector[catastrophe->deriv * 2] +
+			 equation->resulting_vector[catastrophe->deriv * 2 + 1] *
+			 equation->resulting_vector[catastrophe->deriv * 2 + 1]);
+		phase = (180.0 / M_PI) *
+		        atan2(equation->resulting_vector[catastrophe->deriv * 2],
+			equation->resulting_vector[catastrophe->deriv * 2 + 1]);
+
+		break;
+	}
+	case CT_COMPLEX: {
+		cmplx_equation_t *equation = catastrophe->equation;
+		assert(equation);
+
+		module = cabs(equation->resulting_vector[catastrophe->deriv]);
+		phase  = (180.0 / M_PI) *
+		         carg(equation->resulting_vector[catastrophe->deriv]);
+
+		break;
+	}
+	}
+
+	point_array->array[i][j].module = module;
+	point_array->array[i][j].phase  = phase;
 }
 
 int catastrophe_loop(catastrophe_t *const catastrophe)
@@ -108,7 +152,7 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 				&catastrophe->descriptor->cache_root_lock);
 #endif
 			result = simple_cache_search_result(
-					&catastrophe->descriptor->cache_root,
+					&catastrophe->descriptor->cache_root[catastrophe->deriv],
 					&temp_key);
 #ifdef CONFIG_PARALLEL_COMP
 			pthread_spin_unlock(
@@ -123,8 +167,9 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 			}
 #endif
 			catastrophe->calculate(catastrophe, i, j);
+			save_computing_result(catastrophe, i, j);
 
-			/* 
+			/*
 			 * Check the result of calculation in the point.
 			 * In the case of infinum value the calculations
 			 * must be stopped.
@@ -156,7 +201,7 @@ int catastrophe_loop(catastrophe_t *const catastrophe)
 				&catastrophe->descriptor->cache_root_lock);
 #endif
 			simple_cache_save_result(
-					&catastrophe->descriptor->cache_root,
+					&catastrophe->descriptor->cache_root[catastrophe->deriv],
 					result);
 #ifdef CONFIG_PARALLEL_COMP
 			pthread_spin_unlock(
@@ -196,7 +241,7 @@ static int bind_parameter_names(catastrophe_desc_t *desc,
 }
 
 catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
-		parameter_t *parameter)
+		parameter_t *parameter, unsigned int deriv)
 {
 	catastrophe_t *catastrophe;
 	point_array_t *point_array;
@@ -211,6 +256,7 @@ catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
 		goto error;
 
 	catastrophe->descriptor = desc;
+	catastrophe->deriv      = deriv;
 
 	if (desc->par_names) {
 		if (bind_parameter_names(desc, catastrophe, parameter))

@@ -40,7 +40,7 @@ typedef void (*catastrophe_calculate_t)(catastrophe_t *const catastrophe,
 
 typedef struct catastrophe_desc_s catastrophe_desc_t;
 typedef catastrophe_t *(*catastrophe_fabric_t)(catastrophe_desc_t *desc,
-		parameter_t *parameter);
+		parameter_t *parameter, unsigned int deriv);
 
 struct catastrophe_desc_s {
 	catastrophe_type_t   type;
@@ -66,7 +66,7 @@ struct catastrophe_desc_s {
 #ifdef CONFIG_PARALLEL_COMP
 	pthread_spinlock_t cache_root_lock;
 #endif
-	void *cache_root;
+	void *cache_root[CONFIG_CAT_MAX_EQUATIONS];
 #endif
 };
 
@@ -83,6 +83,8 @@ struct catastrophe_s {
 	catastrophe_calculate_t calculate;
 
 	catastrophe_desc_t   *descriptor;
+
+	unsigned int          deriv;
 };
 
 /**
@@ -165,7 +167,7 @@ catastrophe_is_pair_correct(uint_pair_t *pair)
 int catastrophe_loop(catastrophe_t *const catastrophe);
 
 catastrophe_t *catastrophe_fabric(catastrophe_desc_t *desc,
-		parameter_t *parameter);
+		parameter_t *parameter, unsigned int deriv);
 
 void register_catastrophe_desc(catastrophe_desc_t *cd);
 void unregister_catastrophe_desc(catastrophe_desc_t *cd);
